@@ -1,0 +1,37 @@
+{
+  "name": "simple-order-service",
+  "version": "1.0.0",
+  "author": "Danial Javanmardi",
+  "license": "MIT",
+  "main": "server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/server.js\""
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "crud",
+    "rest",
+    "swagger"
+  ],
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "joi": "^17.2.1",
+    "swagger-ui-express": "^4.1.4",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "7.0.22",
+    "concurrently": "^2.2.0",
+    "nodemon": "^1.18.10",
+    "typescript": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mandanemedia/SimpleOrderService"
+  }
+}
