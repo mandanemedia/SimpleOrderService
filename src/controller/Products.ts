@@ -62,7 +62,7 @@ class Products {
     }
 
     delete (req: Request, res: Response) {
-        const id:String =  req.params.id;
+        const id =  req.params.id;
         if (!!this.products[id]) {
             delete this.products[id];
             res.json({
