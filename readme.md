@@ -69,9 +69,23 @@ ER diagrams and similar design elements are not required. Your code should make 
 
 ## Setup
 
+### install packages
+
 ```bash
 npm install
 ```
+
+### install and start postgress 
+```brew update
+brew install postgresql
+brew services start postgresql
+```
+Check your user name for Postgress and revise the config.ts
+```psql postgres
+postgres=# \du
+```
+
+Then, create a database and import orderservice.sql into the new database.
 
 ### Development with nodemon and tsc --watch
 
@@ -87,9 +101,13 @@ npm start
 ```
 Then visit `http://localhost:3000/swagger/#`
 
+## Design 
+![DB Schema](screenshots/DBSchema.png)
 
 ## Assumptions
 
-* Each order only contains one product, 1 to 1 relationship between an order and a product for similarity and save time, in real world that might not be the case and it needs to be refactored.
+* Each order only contains one product, 1 to 1 relationship between an order and a product for similarity and save time, in real world that is not be the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for future. 
  
 * Customer is optional in this design, it can be eliminated based on the given requirements.
+
+* Guid ID is the key in the DB, it should not expose to client side, because of simplicity leave it as is for now. 
