@@ -12,10 +12,17 @@ class Router {
         const router = express.Router()
         const products = new Products();
 
+        const idSchema = Joi.string().guid().required();
+        const productSchema = Joi.object().keys({
+            name: Joi.string().required(),
+            description: Joi.string().required(),
+            price: Joi.number().positive().required(),
+        });
+
         //read all products
         router.get('/products', (req, res, next) => {
             try{
-                res.json(products.read());
+                products.read(req, res);
             } catch (err){
                 next(err);
             }
@@ -24,7 +31,11 @@ class Router {
         // read product by id
         router.get('/products/:id',  (req, res, next) => {
             try{
-                res.json(products.readById(req.params.id));
+                const {error} = idSchema.validate(req.params.id);
+                if (error) {
+                    throw error;
+                }
+                products.readById(req, res);
             } catch (err){
                 next(err);
             }
@@ -33,11 +44,6 @@ class Router {
         //create new product
         router.post('/products', (req, res, next) => {
             try {
-                const productSchema = Joi.object().keys({
-                    name: Joi.string().required(),
-                    description: Joi.string().required(),
-                    price: Joi.number().positive().required(),
-                });
                 const {error} = productSchema.validate(req.body);
                 if (error) {
                     throw error;
@@ -52,7 +58,15 @@ class Router {
         //update product
         router.put('/products/:id',  (req, res, next) => {
             try {
-                res.json(products.update (req.params.id, req.body));
+                const productValidate = productSchema.validate(req.body);
+                if (productValidate.error) {
+                    throw productValidate.error;
+                }
+                const idValidate = idSchema.validate(req.params.id);
+                if (idValidate.error) {
+                    throw idValidate.error;
+                }
+                products.update(req, res);
             } catch (err){
                 next(err);
             }
@@ -61,9 +75,11 @@ class Router {
         //delete product
         router.delete('/products/:id',  (req, res, next) => {
             try {
-                res.json({
-                    id: products.delete(req.params.id)
-                });
+                const {error} = idSchema.validate(req.params.id);
+                if (error) {
+                    throw error;
+                }
+                products.delete(req, res);
             }  catch (err){
                 next(err);
             }

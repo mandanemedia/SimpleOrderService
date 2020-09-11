@@ -13,24 +13,24 @@ class Products {
         this.products[uuid()] = { name: "iPhone 12", description: "256GB", price: 1200};
     }
 
-    read () : Array<Product> {
+    read (req: Request, res: Response) {
         try {
-            return this.products;
+            res.json(this.products);
         }
         catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
         }
     }
 
-    readById (id : String): Product {
+    readById (req: Request, res: Response) {
+        const id = req.params.id;
         if (!!this.products[id]) {
-            return this.products[id];
+            res.json(this.products[id]);
         }
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
     }
-    //create (body : Product) : String {
     create (req: Request, res: Response) {
         try {
             let body = req.body;
@@ -47,25 +47,27 @@ class Products {
         }
     }
 
-    update (id : String,  body : Product) : String {
-
+    update (req: Request, res: Response) {
+        const id = req.params.id;
+        const body = req.body;
         if (!!this.products[id]) {
             let product: Product = {} as Product;
             Object.assign(product, body)
             this.products[id] = product;
-            return this.products[id];
+            res.json(this.products[id]);
         }
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
     }
 
-
-    delete (id : String) : String {
-        console.log(id);
+    delete (req: Request, res: Response) {
+        const id:String =  req.params.id;
         if (!!this.products[id]) {
             delete this.products[id];
-            return id;
+            res.json({
+                id: id
+            });
         }
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
