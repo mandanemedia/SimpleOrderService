@@ -4,6 +4,7 @@ import Products from './controller/Products';
 import { v4 as uuid } from 'uuid';
 import bodyParser from 'body-parser';
 import handleError from './utils/handleError';
+import Joi from 'joi';
 
 class Router {
 
@@ -18,7 +19,7 @@ class Router {
             } catch (err){
                 next(err);
             }
-        })
+        });
 
         // read product by id
         router.get('/products/:id',  (req, res, next) => {
@@ -27,19 +28,25 @@ class Router {
             } catch (err){
                 next(err);
             }
-        })
+        });
 
         //create new product
-        router.post('/product',  (req, res, next) => {
+        router.post('/products', (req, res, next) => {
             try {
-                let newUUID = products.create(req.body);
-                res.json({
-                    id: newUUID
-                })
+                const productSchema = Joi.object().keys({
+                    name: Joi.string().required(),
+                    description: Joi.string().required(),
+                    price: Joi.number().positive().required(),
+                });
+                const {error} = productSchema.validate(req.body);
+                if (error) {
+                    throw error;
+                }
+                products.create(req, res);
             } catch (err){
                 next(err);
             }
-        })
+        });
 
 
         //update product
@@ -49,7 +56,7 @@ class Router {
             } catch (err){
                 next(err);
             }
-        })
+        });
 
         //delete product
         router.delete('/products/:id',  (req, res, next) => {
