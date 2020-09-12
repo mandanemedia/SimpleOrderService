@@ -63,7 +63,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/id"
+                                    "$ref": "#/components/schemas/ProductFull"
                                 }
                             }
                         }
@@ -109,7 +109,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Product"
+                                    "$ref": "#/components/schemas/ProductFull"
                                 }
                             }
                         }
@@ -232,10 +232,33 @@
                     "price": 1100
                 }
             },
+            "ProductFull": {
+                "type": "object",
+                "properties": {
+                    "productId": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "name": "Iphone X",
+                    "description": "512x",
+                    "price": 1100
+                }
+            },
             "Products": {
                 "type": "array",
                 "items": {
-                    "$ref":  "#/components/schemas/Product"
+                    "$ref":  "#/components/schemas/ProductFull"
                 }
             }
         }

@@ -1,10 +1,11 @@
 import express from 'express';
-import Product from './models/Product';
-import Products from './controller/Products';
 import { v4 as uuid } from 'uuid';
 import bodyParser from 'body-parser';
 import handleError from './utils/handleError';
 import Joi from 'joi';
+import Product from './models/Product';
+import Products from './controllers/Products';
+import ProductsDataModel from './dataModels/ProductsDataModel';
 
 class Router {
 
@@ -29,7 +30,7 @@ class Router {
         });
 
         // read product by id
-        router.get('/products/:id',  (req, res, next) => {
+        router.get('/products/:id', (req, res, next) => {
             try{
                 const {error} = idSchema.validate(req.params.id);
                 if (error) {
@@ -56,7 +57,7 @@ class Router {
 
 
         //update product
-        router.put('/products/:id',  (req, res, next) => {
+        router.put('/products/:id', (req, res, next) => {
             try {
                 const productValidate = productSchema.validate(req.body);
                 if (productValidate.error) {
@@ -73,7 +74,7 @@ class Router {
         });
 
         //delete product
-        router.delete('/products/:id',  (req, res, next) => {
+        router.delete('/products/:id', (req, res, next) => {
             try {
                 const {error} = idSchema.validate(req.params.id);
                 if (error) {
@@ -90,7 +91,7 @@ class Router {
         server.use('/', router);
         server.use((err, req, res, next) => {
             handleError(err, res);
-        });
+        });     
     }
 }
 

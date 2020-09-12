@@ -80,7 +80,7 @@ npm install
 brew install postgresql
 brew services start postgresql
 ```
-Check your user name for Postgress and revise the config.ts
+Check your user name for Postgress and revise the config/db.ts
 ```psql postgres
 postgres=# \du
 ```
