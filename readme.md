@@ -106,7 +106,7 @@ Then visit `http://localhost:3000/swagger/#`
 
 ## Assumptions
 
-* Each order only contains one product, 1 to 1 relationship between an order and a product for similarity and save time, in real world that is not be the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for future. 
+* Each order only contains one product, 1 to 1 relationship between an order and a product for simplicity and save time, in real world that is not be the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for future. 
  
 * Customer is optional in this design, it can be eliminated based on the given requirements.
 
