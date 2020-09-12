@@ -17,15 +17,15 @@
     ],
     "tags": [
         {
-            "name": "products",
+            "name": "Products",
             "description": "API for products"
         },
         {
-            "name": "inventories",
+            "name": "Inventories",
             "description": "API for inventories"
         },
         {
-            "name": "customers",
+            "name": "Customers",
             "description": "API for customers"
         }
     ],
@@ -33,7 +33,7 @@
         "/products": {
             "get": {
                 "tags": [
-                    "products"
+                    "Products"
                 ],
                 "summary": "Get all products in system",
                 "responses": {
@@ -51,7 +51,7 @@
             },
             "post": {
                 "tags": [
-                    "products"
+                    "Products"
                 ],
                 "summary": "Create a new product",
                 "requestBody": {
@@ -96,7 +96,7 @@
             ],
             "get": {
                 "tags": [
-                    "products"
+                    "Products"
                 ],
                 "summary": "Get product with given ID",
                 "parameters": [
@@ -130,7 +130,7 @@
             "put": {
                 "summary": "Update product with given ID",
                 "tags": [
-                    "products"
+                    "Products"
                 ],
                 "requestBody": {
                     "description": "Product Object",
@@ -177,7 +177,7 @@
             "delete": {
                 "summary": "Delete Product with given ID",
                 "tags": [
-                    "products"
+                    "Products"
                 ],
                 "parameters": [
                     {
@@ -211,7 +211,7 @@
         "/inventories": {
             "get": {
                 "tags": [
-                    "inventories"
+                    "Inventories"
                 ],
                 "summary": "Get all inventories in system",
                 "responses": {
@@ -242,7 +242,7 @@
             ],
             "post": {
                 "tags": [
-                    "inventories"
+                    "Inventories"
                 ],
                 "summary": "Create a new inventory with given product ID",
                 "requestBody": {
@@ -286,7 +286,7 @@
             },
             "get": {
                 "tags": [
-                    "inventories"
+                    "Inventories"
                 ],
                 "summary": "Get inventory with given product ID",
                 "parameters": [
@@ -320,7 +320,7 @@
             "put": {
                 "summary": "Update Inventory with given product ID",
                 "tags": [
-                    "inventories"
+                    "Inventories"
                 ],
                 "requestBody": {
                     "description": "Inventory Object",
@@ -367,7 +367,7 @@
             "delete": {
                 "summary": "Delete Inventory with given product ID",
                 "tags": [
-                    "inventories"
+                    "Inventories"
                 ],
                 "parameters": [
                     {
@@ -401,7 +401,7 @@
         "/customers": {
             "get": {
                 "tags": [
-                    "customers"
+                    "Customers"
                 ],
                 "summary": "Get all customers in system",
                 "responses": {
@@ -419,7 +419,7 @@
             },
             "post": {
                 "tags": [
-                    "customers"
+                    "Customers"
                 ],
                 "summary": "Create a new customer",
                 "requestBody": {
@@ -464,7 +464,7 @@
             ],
             "get": {
                 "tags": [
-                    "customers"
+                    "Customers"
                 ],
                 "summary": "Get customer with given ID",
                 "parameters": [
@@ -498,7 +498,7 @@
             "put": {
                 "summary": "Update customer with given ID",
                 "tags": [
-                    "customers"
+                    "Customers"
                 ],
                 "requestBody": {
                     "description": "Customer Object",
@@ -545,7 +545,7 @@
             "delete": {
                 "summary": "Delete Customer with given ID",
                 "tags": [
-                    "customers"
+                    "Customers"
                 ],
                 "parameters": [
                     {
@@ -684,7 +684,7 @@
                     "email": "Ryan.Samberg.test@gmail.com"
                 }
             },
-            "CustomerFull": {
+            "CustomersFull": {
                 "type": "object",
                 "properties": {
                     "customerId": {
@@ -706,7 +706,7 @@
             "Customers": {
                 "type": "array",
                 "items": {
-                    "$ref":  "#/components/schemas/CustomerFull"
+                    "$ref":  "#/components/schemas/Customer"
                 }
             }
         }
