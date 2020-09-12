@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import Joi from 'joi';
 import Products from './../controllers/Products';
 
-class RoutesProducts {
+class ProductsRoutes {
     public router;
     constructor(server: express.Express) {
         this.router = express.Router();
@@ -85,5 +85,5 @@ class RoutesProducts {
     };
 };
 
-export default RoutesProducts;
+export default ProductsRoutes;
 

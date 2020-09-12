@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import handleError from './utils/handleError';
-import RoutesProducts from './routes/RoutesProducts';
+import ProductsRoutes from './routes/ProductsRoutes';
 
 class Router {
 
@@ -10,8 +10,8 @@ class Router {
         server.use(bodyParser.urlencoded({ extended: true }));
         server.use(bodyParser.json());
 
-        const routesProducts = new RoutesProducts(server);
-        server.use('/products', routesProducts.router );
+        const productsRoutes = new ProductsRoutes(server);
+        server.use('/products', productsRoutes.router );
 
         server.use((err, req, res, next) => {
             handleError(err, res);
