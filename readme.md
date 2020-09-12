@@ -112,4 +112,4 @@ Then visit `http://localhost:3000/swagger/#`
 
 * Guid ID is the key in the DB, it should not expose to client side, because of simplicity leave it as is for now. 
 
-* Inventory is splited up from Product because of the data domain, and for futher development. i.e. an iPhone can have multiple colors, colors can be stored in the invenotry along with the quantity.
+* Inventory is splited up from Product because of the data domain, and for futher development. i.e. an iPhone can have multiple colors, colors can be stored in the invenotry along with the quantity. As of now, the productId in the inventory table should be unique, it needs to be revised in the future. 

@@ -10,7 +10,7 @@ class ProductsDataModel {
             type: Sequelize.STRING
         },
         price: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
         },
         productId: {
             type: Sequelize.UUID,
@@ -25,10 +25,10 @@ class ProductsDataModel {
         return await this.product.findAll();
     }
     
-    async readById (productID:string) {
+    async readById (productId:string) {
         return await this.product.findOne({
             where: {
-                productId: productID
+                productId: productId
             }
         });
     }
@@ -48,10 +48,10 @@ class ProductsDataModel {
         );
     }
 
-    async delete (productID:string) {
+    async delete (productId:string) {
         return await this.product.destroy({
             where: {
-                productId: productID
+                productId: productId
             }
         });
     }

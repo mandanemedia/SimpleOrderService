@@ -18,7 +18,11 @@
     "tags": [
         {
             "name": "products",
-            "description": "API for products in the system"
+            "description": "API for products"
+        },
+        {
+            "name": "inventories",
+            "description": "API for inventories "
         }
     ],
     "paths": {
@@ -199,6 +203,196 @@
                     }
                 }
             }
+        },
+        "/inventories": {
+            "get": {
+                "tags": [
+                    "inventories"
+                ],
+                "summary": "Get all inventories in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Inventories"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the product that we want to match",
+                    "schema": {
+                        "type" : "string"
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "inventories"
+                ],
+                "summary": "Create a new inventory with given product ID",
+                "requestBody": {
+                    "description": "Inventory Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Inventory"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Inventory with for the new product ID",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InventoryFull"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "inventories"
+                ],
+                "summary": "Get inventory with given product ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Product with id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InventoryFull"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Inventory not found."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update Inventory with given product ID",
+                "tags": [
+                    "inventories"
+                ],
+                "requestBody": {
+                    "description": "Inventory Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Inventory"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Inventory with given product id to have the updated properties",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Inventory"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Inventory not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete Inventory with given product ID",
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Delete Inventory with product id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/id"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Inventory not found."
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -259,6 +453,38 @@
                 "type": "array",
                 "items": {
                     "$ref":  "#/components/schemas/ProductFull"
+                }
+            },
+            "Inventory": {
+                "type": "object",
+                "properties": {
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "quantity": 100
+                }
+            },
+            "InventoryFull": {
+                "type": "object",
+                "properties": {
+                    "productId": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "quantity": 100
+                }
+            },
+            "Inventories": {
+                "type": "array",
+                "items": {
+                    "$ref":  "#/components/schemas/InventoryFull"
                 }
             }
         }
