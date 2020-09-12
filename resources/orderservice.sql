@@ -124,3 +124,10 @@ BEGIN;
 INSERT INTO "public"."inventory" VALUES ('2e6de3b7-fcda-4b0e-8fd4-53eee2c34e99', 20);
 INSERT INTO "public"."inventory" VALUES ('d85b7583-e410-419a-92fb-7708cc17e01a', 30);
 COMMIT;
+
+-- ----------------------------
+-- Records of customer
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."customer" VALUES ('4bfcdc1f-dc2f-4364-96df-8d241dbdb8fa', 'Ryan.Samberg.test@gmail.com', 'Alex Samberg');
+COMMIT;

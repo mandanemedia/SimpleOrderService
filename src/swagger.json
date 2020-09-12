@@ -22,7 +22,11 @@
         },
         {
             "name": "inventories",
-            "description": "API for inventories "
+            "description": "API for inventories"
+        },
+        {
+            "name": "customers",
+            "description": "API for customers"
         }
     ],
     "paths": {
@@ -393,6 +397,184 @@
                     }
                 }
             }
+        },
+        "/customers": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get all customers in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customers"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a new customer",
+                "requestBody": {
+                    "description": "customer Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomerFull"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/customers/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the customer that we want to match",
+                    "schema": {
+                        "type" : "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get customer with given ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Customer with id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomersFull"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Customer not found."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update customer with given ID",
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "description": "Customer Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Customer with new values of properties",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Customer not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete Customer with given ID",
+                "tags": [
+                    "customers"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Delete Customer with id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/id"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Customer not found."
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -485,6 +667,46 @@
                 "type": "array",
                 "items": {
                     "$ref":  "#/components/schemas/InventoryFull"
+                }
+            },
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "fullName": "Ryan Samberg",
+                    "email": "Ryan.Samberg.test@gmail.com"
+                }
+            },
+            "CustomerFull": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "customerId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "fullName": "Ryan Samberg",
+                    "email": "Ryan.Samberg.test@gmail.com"
+                }
+            },
+            "Customers": {
+                "type": "array",
+                "items": {
+                    "$ref":  "#/components/schemas/CustomerFull"
                 }
             }
         }

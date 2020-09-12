@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import handleError from './utils/handleError';
 import ProductsRoutes from './routes/ProductsRoutes';
 import InventoriesRoutes from './routes/InventoriesRoutes';
+import CustomersRoutes from './routes/CustomersRoutes';
 
 class Router {
 
@@ -15,6 +16,8 @@ class Router {
         server.use('/products', productsRoutes.router );
         const inventoriesRoutes = new InventoriesRoutes(server);
         server.use('/inventories', inventoriesRoutes.router );
+        const customersRoutes = new CustomersRoutes(server);
+        server.use('/customers', customersRoutes.router );
 
         server.use((err, req, res, next) => {
             handleError(err, res);
