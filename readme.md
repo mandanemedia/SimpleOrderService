@@ -85,7 +85,7 @@ Check your user name for Postgress and revise the config/db.ts
 postgres=# \du
 ```
 
-Then, create a database and import orderservice.sql into the new database.
+Then, create a database and import resources/orderservice.sql into the new database.
 
 ### Development with nodemon and tsc --watch
 
@@ -102,12 +102,14 @@ npm start
 Then visit `http://localhost:3000/swagger/#`
 
 ## Design 
-![DB Schema](screenshots/DBSchema.png)
+![DB Schema](resources/DBSchema.png)
 
 ## Assumptions
 
-* Each order only contains one product, 1 to 1 relationship between an order and a product for simplicity and save time, in real world that is not the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for future refactoring. 
+* Each order only contains one product, 1 to 1 relationship between an order and a product for simplicity and save time, in real world that is not the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for futher development. 
  
 * Customer is optional in this design, it can be eliminated based on the given requirements.
 
 * Guid ID is the key in the DB, it should not expose to client side, because of simplicity leave it as is for now. 
+
+* Inventory is splited up from Product because of the data domain, and for futher development. i.e. an iPhone can have multiple colors, colors can be stored in the invenotry along with the quantity.
