@@ -6,14 +6,11 @@ import HttpStatusCode  from './../models/HttpStatusCode';
 import ProductsDataModel from './../dataModels/ProductsDataModel';
 
 class Products {
-    products : Map<String, Product>;
+    productsDataModel: ProductsDataModel;
     constructor() {
-        this.products =  new Map<string, Product>();
-        this.products[uuid()] = { name: "iPhone X", description: "128GB", price: 700};
-        this.products[uuid()] = { name: "iPhone X", description: "256GB", price: 900};
-        this.products[uuid()] = { name: "iPhone 12", description: "256GB", price: 1200};
+        this.productsDataModel = new ProductsDataModel();
     }
-    productsDataModel = new ProductsDataModel();
+    
 
     async read (req: Request, res: Response) {
         try {
@@ -39,7 +36,7 @@ class Products {
         try {
             const { name, description, price } = req.body;
             const productId = uuid();
-            const product = await this.productsDataModel.create( productId, name, description, price);
+            const product: Product = await this.productsDataModel.create( productId, name, description, price);
             return res.json(product);
         }
         catch (e) {
