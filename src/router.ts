@@ -19,7 +19,6 @@ class Router {
         const customersRoutes = new CustomersRoutes(server);
         server.use('/customers', customersRoutes.router );
 
-        // Add read order end point
         //TODO update sql files
         //TODO add orders end points
 
