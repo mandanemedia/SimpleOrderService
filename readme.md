@@ -104,6 +104,18 @@ Then visit `http://localhost:3000/swagger/#`
 ## Design 
 ![DB Schema](resources/DBSchema.png)
 
+## Documentation 
+
+Defined paths:
+* Products
+* Inventories
+* Customers
+* Orders
+* OrderItems
+
+To view the list of all endpoints go to the swagger.
+
+
 ## Assumptions
  
 * Customer is optional in this design, it can be eliminated based on the given requirements.
