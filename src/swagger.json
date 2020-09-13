@@ -27,6 +27,14 @@
         {
             "name": "Customers",
             "description": "API for customers"
+        },
+        {
+            "name": "Orders",
+            "description": "API for orders"
+        },
+        {
+            "name": "OrderItems",
+            "description": "API for OrderItems"
         }
     ],
     "paths": {
@@ -575,6 +583,362 @@
                     }
                 }
             }
+        },
+        "/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get all orders in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Orders"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Create a new order",
+                "requestBody": {
+                    "description": "Order Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderFull"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the order that we want to match",
+                    "schema": {
+                        "type" : "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get order with given order ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Order id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderFull"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Order not found."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update order with given ID",
+                "tags": [
+                    "Orders"
+                ],
+                "requestBody": {
+                    "description": "Order Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Order with given id to have the updated properties",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. Order not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete Order with given ID",
+                "tags": [
+                    "Orders"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Delete Order with given id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/id"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Order not found."
+                    }
+                }
+            }
+        },
+        "/orderItems": {
+            "get": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Get all OrderItems in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItems"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Create a new OrderItem",
+                "requestBody": {
+                    "description": "OrderItem Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderItem"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItemFull"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/orderitems/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the Order Item that we want to match",
+                    "schema": {
+                        "type" : "string"
+                    }
+                }
+            ],
+            "get": {
+                "tags": [
+                    "OrderItems"
+                ],
+                "summary": "Get OrderItem with given order ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "OrderItem id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItemFull"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. OrderItem not found."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update OrderItem with given ID",
+                "tags": [
+                    "OrderItems"
+                ],
+                "requestBody": {
+                    "description": "OrderItem Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderItem"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "OrderItem with given id to have the updated properties",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    },
+                    "404": {
+                        "description": "Failed. OrderItem Not found."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete OrderItem with given ID",
+                "tags": [
+                    "OrderItems"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Delete OrderItem with given id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/id"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. OrderItem not found."
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -770,6 +1134,124 @@
                 "type": "array",
                 "items": {
                     "$ref":  "#/components/schemas/Customer"
+                }
+            },
+            "OrderItem": {
+                "type": "object",
+                "properties": {
+                    "orderId": {
+                        "type": "string"
+                    },
+                    "inventoryId": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "orderId": "a6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "inventoryId": "b6b61600-1afe-4d0d-9ff9-e9a2d3caed02",
+                    "quantity": "2"
+                }
+            },
+            "OrderItemFull": {
+                "type": "object",
+                "properties": {
+                    "orderId": {
+                        "type": "string"
+                    },
+                    "inventoryId": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    },
+                    "orderItemId": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "orderId": "a6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "inventoryId": "b6b61600-1afe-4d0d-9ff9-e9a2d3caed02",
+                    "quantity": "2",
+                    "orderItemId": "c6b61600-1afe-4d0d-9ff9-e9a2d3caed03"
+                }
+            },
+            "OrderItems": {
+                "type": "array",
+                "items": {
+                    "$ref":  "#/components/schemas/OrderItemFull"
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "fullName": "Ryan Samberg",
+                    "email": "Ryan.Samberg.test@gmail.com",
+                    "date": "2020-09-12",
+                    "status": "Shipped"
+                }
+            },
+            "OrderFull": {
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "orderId": {
+                        "type": "string"
+                    },
+                    "orderItems":{
+                        "type": "array",
+                        "items": {
+                            "$ref":  "#/components/schemas/OrderItemFull"
+                        }
+                    }
+                },
+                "example": {
+                    "orderId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "fullName": "Ryan Samberg",
+                    "email": "Ryan.Samberg.test@gmail.com",
+                    "date": "2020-09-12",
+                    "status": "Shipped",
+                    "orderItems":[
+                        {
+                            "orderId": "a6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                            "inventoryId": "b6b61600-1afe-4d0d-9ff9-e9a2d3caed02",
+                            "quantity": "2",
+                            "orderItemId": "c6b61600-1afe-4d0d-9ff9-e9a2d3caed03"
+                        }
+                    ]
+                }
+            },
+            "Orders": {
+                "type": "array",
+                "items": {
+                    "$ref":  "#/components/schemas/OrderFull"
                 }
             }
         }

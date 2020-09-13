@@ -1,5 +1,5 @@
 enum Status {
-    Pending,
-    Filled
+    Shipped,
+    Delivered
 }
 export default Status;
