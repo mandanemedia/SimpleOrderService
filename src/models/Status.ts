@@ -1,7 +1,5 @@
 enum Status {
     Pending,
-    Filled,
-    Failed,
-    Canceled,
+    Filled
 }
 export default Status;

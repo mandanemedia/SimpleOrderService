@@ -105,11 +105,9 @@ Then visit `http://localhost:3000/swagger/#`
 ![DB Schema](resources/DBSchema.png)
 
 ## Assumptions
-
-* Each order only contains one product, 1 to 1 relationship between an order and a product for simplicity and save time, in real world that is not the case one order can consist of more than product (1 to many relationship), so need to have another table to capture this in future. order_product is designed for futher development. 
  
 * Customer is optional in this design, it can be eliminated based on the given requirements.
 
-* Guid ID is the key in the DB, it should not expose to client side, because of simplicity leave it as is for now. 
+* Guid ID is the key in the DB, it should not expose to client side, because of simplicity, leave it out as is for now. 
 
-* Inventory is splited up from Product because of the data domain, and for futher development. i.e. an iPhone can have multiple colors, colors can be stored in the invenotry along with the quantity. As of now, the productId in the inventory table should be unique, it needs to be revised in the future. 
+* Inventory is splited up from Product because of the data domain. i.e. Lululemon commuter pants is the name of product, while its sizes and colors along with the quantity are stored in the invenotry.

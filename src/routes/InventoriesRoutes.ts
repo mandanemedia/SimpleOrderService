@@ -12,12 +12,19 @@ class InventoriesRoutes {
 
         const idSchema = Joi.string().guid().required();
         const inventorySchema = Joi.object().required().keys({
-            quantity: Joi.number().required(),
+            productId: Joi.string().guid().required(),
+            color: Joi.string().required(),
+            size: Joi.string().required(),
+            quantity: Joi.number().required()
         });
 
         //read all
         this.router.get('/', async (req, res, next) => {
             try{
+                const { error } = Joi.string().guid().validate(req.query.productId);
+                if (error) {
+                    throw error;
+                }
                 await inventories.read(req, res);
             } catch (err){
                 next(err);
@@ -38,15 +45,11 @@ class InventoriesRoutes {
         });
 
         //create
-        this.router.post('/:id', async (req, res, next) => {
+        this.router.post('/', async (req, res, next) => {
             try {
-                const inventoryValidate = inventorySchema.validate(req.body);
-                if (inventoryValidate.error) {
-                    throw inventoryValidate.error;
-                }
-                const idValidate = idSchema.validate(req.params.id);
-                if (idValidate.error) {
-                    throw idValidate.error;
+                const {error} = inventorySchema.validate(req.body);
+                if (error) {
+                    throw error;
                 }
                 await inventories.create(req, res);
             } catch (err){

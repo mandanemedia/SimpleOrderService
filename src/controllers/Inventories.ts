@@ -14,7 +14,8 @@ class Inventories {
 
     async read (req: Request, res: Response) {
         try {
-            return res.json(await this.inventoriesDataModel.read());
+            const { productId } = req.query;
+            return res.json(await this.inventoriesDataModel.read(productId));
         }
         catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
@@ -34,9 +35,9 @@ class Inventories {
     async create (req: Request, res: Response) {
         try {
             //TODO check that productId exist in DB first
-            const { quantity } = req.body;
-            const productId = req.params.id;
-            const inventory: Inventory = await this.inventoriesDataModel.create( productId, quantity);
+            const { productId, color, size, quantity } = req.body;
+            const inventoryId = uuid();
+            const inventory: Inventory = await this.inventoriesDataModel.create( inventoryId, productId, color, size, quantity);
             return res.json(inventory);
         }
         catch (e) {
@@ -45,13 +46,12 @@ class Inventories {
     }
 
     async update (req: Request, res: Response) {
-        const { quantity } = req.body;
-        const productId = req.params.id;
-        const updatedCount = await this.inventoriesDataModel.update(productId, quantity );
+        const { productId, color, size, quantity } = req.body;
+        const inventoryId = req.params.id;
+        const updatedCount = await this.inventoriesDataModel.update( inventoryId, productId, color, size, quantity);
         if (updatedCount[0] === 1) {
-            return res.json({ productId, quantity });
+            return res.json({ inventoryId, productId, color, size, quantity });
         }
-        //TODO need to handle cannot update the record
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
@@ -63,7 +63,6 @@ class Inventories {
         if (deletedCount === 1) {
             return res.json({id});
         }
-        //TODO need to handle cannot delete the record
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }

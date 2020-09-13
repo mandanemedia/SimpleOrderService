@@ -214,6 +214,18 @@
                     "Inventories"
                 ],
                 "summary": "Get all inventories in system",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "productId",
+                        "required": true,
+                        "description": "Product with id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -226,20 +238,7 @@
                         }
                     }
                 }
-            }
-        },
-        "/inventories/{id}": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "description": "ID of the product that we want to match",
-                    "schema": {
-                        "type" : "string"
-                    }
-                }
-            ],
+            },
             "post": {
                 "tags": [
                     "Inventories"
@@ -256,18 +255,6 @@
                         }
                     }
                 },
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "Inventory with for the new product ID",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -283,18 +270,31 @@
                         "description": "Failed. Bad post data."
                     }
                 }
-            },
+            }
+        },
+        "/inventories/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the Inventory that we want to match",
+                    "schema": {
+                        "type" : "string"
+                    }
+                }
+            ],
             "get": {
                 "tags": [
                     "Inventories"
                 ],
-                "summary": "Get inventory with given product ID",
+                "summary": "Get inventory with given Inventory ID",
                 "parameters": [
                     {
                         "in": "path",
                         "name": "id",
                         "required": true,
-                        "description": "Product with id",
+                        "description": "Inventory with id",
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
@@ -318,7 +318,7 @@
                 }
             },
             "put": {
-                "summary": "Update Inventory with given product ID",
+                "summary": "Update Inventory with given Inventory ID",
                 "tags": [
                     "Inventories"
                 ],
@@ -338,7 +338,7 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
-                        "description": "Inventory with given product id to have the updated properties",
+                        "description": "Inventory with given id to have the updated properties",
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
@@ -365,7 +365,7 @@
                 }
             },
             "delete": {
-                "summary": "Delete Inventory with given product ID",
+                "summary": "Delete Inventory with given ID",
                 "tags": [
                     "Inventories"
                 ],
@@ -374,7 +374,7 @@
                         "in": "path",
                         "name": "id",
                         "required": true,
-                        "description": "Delete Inventory with product id",
+                        "description": "Delete Inventory with given id",
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
@@ -603,9 +603,9 @@
                     }
                 },
                 "example": {
-                    "name": "Iphone X",
-                    "description": "512x",
-                    "price": 1100
+                    "name": "Lululemon pants",
+                    "description": "Commuter",
+                    "price": 100
                 }
             },
             "ProductFull": {
@@ -626,9 +626,9 @@
                 },
                 "example": {
                     "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
-                    "name": "Iphone X",
-                    "description": "512x",
-                    "price": 1100
+                    "name": "Lululemon pants",
+                    "description": "Commuter",
+                    "price": 100
                 }
             },
             "Products": {
@@ -640,18 +640,13 @@
             "Inventory": {
                 "type": "object",
                 "properties": {
-                    "quantity": {
-                        "type": "number"
-                    }
-                },
-                "example": {
-                    "quantity": 100
-                }
-            },
-            "InventoryFull": {
-                "type": "object",
-                "properties": {
                     "productId": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": "string"
+                    },
+                    "size": {
                         "type": "string"
                     },
                     "quantity": {
@@ -660,7 +655,36 @@
                 },
                 "example": {
                     "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
-                    "quantity": 100
+                    "color": "black",
+                    "size": "Large",
+                    "quantity": 50
+                }
+            },
+            "InventoryFull": {
+                "type": "object",
+                "properties": {
+                    "inventoryId": {
+                        "type": "string"
+                    },
+                    "productId": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": "string"
+                    },
+                    "size": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "inventoryId": "a6b61600-1afe-4d0d-9ff9-e9a2d3caed02",
+                    "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "color": "black",
+                    "size": "Large",
+                    "quantity": 50
                 }
             },
             "Inventories": {

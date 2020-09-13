@@ -1,5 +1,7 @@
 import { sequelize } from './../config/db';
 import { Sequelize } from 'sequelize';
+import BaseError from './../utils/BaseError';
+import HttpStatusCode  from './../models/HttpStatusCode';
 
 class ProductsDataModel {
     public product = sequelize.define('product', {
@@ -38,22 +40,44 @@ class ProductsDataModel {
     }
 
     async update (productId :string, name: string, description: string, price: number ) {
-        return await this.product.update(
-            { name, description, price }, 
-            {
-                where: {
-                    productId: productId
+        try{
+            return await this.product.update(
+                { name, description, price }, 
+                {
+                    where: {
+                        productId: productId
+                    }
                 }
+            );
+        }
+        catch(e){
+            if( e.name == "SequelizeForeignKeyConstraintError")
+            {
+                throw new BaseError(HttpStatusCode.CONFLICT);
             }
-        );
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
     }
 
     async delete (productId:string) {
-        return await this.product.destroy({
-            where: {
-                productId: productId
+        try{
+            return await this.product.destroy({
+                where: {
+                    productId: productId
+                }
+            });
+        }
+        catch(e){
+            if( e.name == "SequelizeForeignKeyConstraintError")
+            {
+                throw new BaseError(HttpStatusCode.CONFLICT);
             }
-        });
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
     }
 };
 

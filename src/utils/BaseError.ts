@@ -16,6 +16,11 @@ class BaseError extends Error {
                 this.httpCode = httpCode;
                 break; 
             } 
+            case HttpStatusCode.CONFLICT: { 
+                super('CONFLICT');
+                this.httpCode = httpCode;
+                break; 
+            } 
             case HttpStatusCode.INTERNAL_SERVER: { 
                 super('INTERNAL SERVER');
                 this.httpCode = httpCode;

@@ -1,5 +1,7 @@
 import { sequelize } from './../config/db';
 import { Sequelize } from 'sequelize';
+import BaseError from './../utils/BaseError';
+import HttpStatusCode  from './../models/HttpStatusCode';
 
 class CustomersDataModel {
     public customer = sequelize.define('customer', {
@@ -49,11 +51,22 @@ class CustomersDataModel {
     }
 
     async delete (customerId:string) {
-        return await this.customer.destroy({
-            where: {
-                customerId: customerId
+        try{
+            return await this.customer.destroy({
+                where: {
+                    customerId: customerId
+                }
+            });
+        }
+        catch(e){
+            if( e.name == "SequelizeForeignKeyConstraintError")
+            {
+                throw new BaseError(HttpStatusCode.CONFLICT);
             }
-        });
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
     }
 };
 

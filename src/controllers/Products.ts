@@ -62,7 +62,6 @@ class Products {
         if (deletedCount === 1) {
             return res.json({id});
         }
-        //TODO need to handle cannot delete the record
         else {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
