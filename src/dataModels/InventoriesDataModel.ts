@@ -2,6 +2,7 @@ import { sequelize } from './../config/db';
 import { Sequelize } from 'sequelize';
 import BaseError from './../utils/BaseError';
 import HttpStatusCode  from './../models/HttpStatusCode';
+import ProductsDataModel  from './ProductsDataModel';
 
 class InventoriesDataModel {
     public inventory = sequelize.define('inventory', {
@@ -25,23 +26,53 @@ class InventoriesDataModel {
         timestamps: false,
         tableName: 'inventory'
     });
+    productsDataModel = new ProductsDataModel();
 
+    constructor() {
+        this.inventory.belongsTo(this.productsDataModel.product, {foreignKey: 'productId'}); 
+    }
+
+    convertToProducts (total, item) {
+        const { inventoryId, quantity, color, size, productId, product } = item;
+        const existingProduct = total.find( product => product.productId == productId);
+        if(existingProduct){
+            existingProduct.inventories.push({ inventoryId, quantity, color, size });
+        }
+        else{
+            total.push({ 
+                name: product.name, 
+                description: product.description, 
+                price: product.price,
+                productId: product.productId,
+                inventories: [{ inventoryId, quantity, color, size }] 
+            });
+        }
+        return total;
+    };
     async read (productId) {
-        if(!! productId){
-            return await this.inventory.findAll({ where: {productId}});
+        if(!!productId){
+            const inventories = await this.inventory.findAll({ 
+                where: { productId },
+                include: [{ 
+                    model: this.productsDataModel.product, required: true
+                }]
+            });
+            return inventories.reduce(this.convertToProducts, []);
         }
         else
         {
-            return await this.inventory.findAll();
+            const inventories = await this.inventory.findAll({
+                include: [{ 
+                    model: this.productsDataModel.product, required: true
+                }]
+            });
+            return inventories.reduce(this.convertToProducts, []);
         }
     }
     
     async readById (inventoryId:string) {
-        //TODO expand it to return the full product details
         return await this.inventory.findOne({
-            where: {
-                inventoryId: inventoryId
-            }
+            where: {  inventoryId: inventoryId }
         });
     }
     
@@ -81,8 +112,6 @@ class InventoriesDataModel {
             });
         }
         catch(e){
-            console.log(e);
-            console.log('     ------------------------    e');
             if( e.name == "SequelizeForeignKeyConstraintError")
             {
                 throw new BaseError(HttpStatusCode.CONFLICT);

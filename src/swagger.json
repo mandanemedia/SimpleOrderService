@@ -232,7 +232,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Inventories"
+                                    "$ref": "#/components/schemas/FormattedInventories"
                                 }
                             }
                         }
@@ -691,6 +691,45 @@
                 "type": "array",
                 "items": {
                     "$ref":  "#/components/schemas/InventoryFull"
+                }
+            },
+            "FormattedInventory": {
+                "type": "object",
+                "items": {
+                    "allOf":[
+                        {
+                            "$ref":  "#/components/schemas/ProductFull"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "inventories": {
+                                "type": "array",
+                                "$ref":  "#/components/schemas/InventoryFull"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "example": {
+                    "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "name": "Lululemon pants",
+                    "description": "Commuter",
+                    "price": 100,
+                    "inventories" : [{
+                            "inventoryId": "a6b61600-1afe-4d0d-9ff9-e9a2d3caed02",
+                            "productId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                            "color": "black",
+                            "size": "Large",
+                            "quantity": 50
+                        }
+                    ]
+                }
+            },
+            "FormattedInventories":{
+                "type": "array",
+                "items": {
+                    "$ref":  "#/components/schemas/FormattedInventory"
                 }
             },
             "Customer": {
