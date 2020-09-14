@@ -1,4 +1,4 @@
-import HttpStatusCode  from './../models/HttpStatusCode'
+import { HttpStatusCode } from './../models/types';
 
 class BaseError extends Error {
     public readonly httpCode: HttpStatusCode;

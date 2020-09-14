@@ -1,21 +1,21 @@
 import { sequelize } from './../config/db';
-import { Sequelize } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
+import { HttpStatusCode } from './../models/types';
 
-class ProductsDataModel {
+class ProductsModel {
     public product = sequelize.define('product', {
         name: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         description: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         price: {
-            type: Sequelize.FLOAT
+            type: DataTypes.FLOAT
         },
         productId: {
-            type: Sequelize.UUID,
+            type: DataTypes.UUID,
             primaryKey: true,
         }
     },{
@@ -81,4 +81,4 @@ class ProductsDataModel {
     }
 };
 
-export default ProductsDataModel;
+export default ProductsModel;

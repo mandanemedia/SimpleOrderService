@@ -1,21 +1,19 @@
 import { Request, Response } from 'express';
-import Inventory from './../models/Inventory';
+import { Inventory, HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
-import InventoriesDataModel from './../dataModels/InventoriesDataModel';
+import InventoriesModel from './../models/InventoriesModel';
 
 class Inventories {
-    inventoriesDataModel: InventoriesDataModel;
+    inventoriesModel: InventoriesModel;
     constructor() {
-        this.inventoriesDataModel = new InventoriesDataModel();
+        this.inventoriesModel = new InventoriesModel();
     }
     
-
     async read (req: Request, res: Response) {
         try {
             const { productId } = req.query;
-            return res.json(await this.inventoriesDataModel.read(productId));
+            return res.json(await this.inventoriesModel.read(productId));
         }
         catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
@@ -24,7 +22,7 @@ class Inventories {
 
     async readById (req: Request, res: Response) {
         const id = req.params.id;
-        const inventory = await this.inventoriesDataModel.readById(id);
+        const inventory = await this.inventoriesModel.readById(id);
         if (!!inventory) {
             return res.json(inventory);
         }
@@ -32,12 +30,13 @@ class Inventories {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
     }
+
     async create (req: Request, res: Response) {
         try {
             //TODO check that productId exist in DB first
             const { productId, color, size, quantity } = req.body;
             const inventoryId = uuid();
-            const inventory: Inventory = await this.inventoriesDataModel.create( inventoryId, productId, color, size, quantity);
+            const inventory = await this.inventoriesModel.create( inventoryId, productId, color, size, quantity);
             return res.json(inventory);
         }
         catch (e) {
@@ -48,7 +47,7 @@ class Inventories {
     async update (req: Request, res: Response) {
         const { productId, color, size, quantity } = req.body;
         const inventoryId = req.params.id;
-        const updatedCount = await this.inventoriesDataModel.update( inventoryId, productId, color, size, quantity);
+        const updatedCount = await this.inventoriesModel.update( inventoryId, productId, color, size, quantity);
         if (updatedCount[0] === 1) {
             return res.json({ inventoryId, productId, color, size, quantity });
         }
@@ -59,7 +58,7 @@ class Inventories {
 
     async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const deletedCount = await this.inventoriesDataModel.delete(id);
+        const deletedCount = await this.inventoriesModel.delete(id);
         if (deletedCount === 1) {
             return res.json({id});
         }

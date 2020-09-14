@@ -1,20 +1,18 @@
 import { Request, Response } from 'express';
-import Product from './../models/Product';
+import { Product, HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
-import ProductsDataModel from './../dataModels/ProductsDataModel';
+import ProductsModel from './../models/ProductsModel';
 
 class Products {
-    productsDataModel: ProductsDataModel;
+    productsModel: ProductsModel;
     constructor() {
-        this.productsDataModel = new ProductsDataModel();
+        this.productsModel = new ProductsModel();
     }
     
-
     async read (req: Request, res: Response) {
         try {
-            return res.json(await this.productsDataModel.read());
+            return res.json(await this.productsModel.read());
         }
         catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
@@ -23,7 +21,7 @@ class Products {
 
     async readById (req: Request, res: Response) {
         const id = req.params.id;
-        const product = await this.productsDataModel.readById(id);
+        const product = await this.productsModel.readById(id);
         if (!!product) {
             return res.json(product);
         }
@@ -31,11 +29,12 @@ class Products {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
     }
+
     async create (req: Request, res: Response) {
         try {
             const { name, description, price } = req.body;
             const productId = uuid();
-            const product: Product = await this.productsDataModel.create( productId, name, description, price);
+            const product = await this.productsModel.create( productId, name, description, price);
             return res.json(product);
         }
         catch (e) {
@@ -46,7 +45,7 @@ class Products {
     async update (req: Request, res: Response) {
         const { name, description, price } = req.body;
         const productId = req.params.id;
-        const updatedCount = await this.productsDataModel.update(productId, name, description, price );
+        const updatedCount = await this.productsModel.update(productId, name, description, price );
         if (updatedCount[0] === 1) {
             return res.json({ productId, name, description, price });
         }
@@ -58,7 +57,7 @@ class Products {
 
     async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const deletedCount = await this.productsDataModel.delete(id);
+        const deletedCount = await this.productsModel.delete(id);
         if (deletedCount === 1) {
             return res.json({id});
         }

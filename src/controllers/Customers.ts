@@ -1,20 +1,18 @@
 import { Request, Response } from 'express';
-import Customer from './../models/Customer';
+import { Customer,  HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
-import CustomersDataModel from './../dataModels/CustomersDataModel';
+import CustomersModel from './../models/CustomersModel';
 
 class Customers {
-    customersDataModel: CustomersDataModel;
+    customersModel: CustomersModel;
     constructor() {
-        this.customersDataModel = new CustomersDataModel();
+        this.customersModel = new CustomersModel();
     }
     
-
     async read (req: Request, res: Response) {
         try {
-            return res.json(await this.customersDataModel.read());
+            return res.json(await this.customersModel.read());
         }
         catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
@@ -23,7 +21,7 @@ class Customers {
 
     async readById (req: Request, res: Response) {
         const id = req.params.id;
-        const customer = await this.customersDataModel.readById(id);
+        const customer = await this.customersModel.readById(id);
         if (!!customer) {
             return res.json(customer);
         }
@@ -31,11 +29,12 @@ class Customers {
             throw new BaseError(HttpStatusCode.NOT_FOUND);
         }
     }
+
     async create (req: Request, res: Response) {
         try {
             const { fullName, email } = req.body;
             const customerId = uuid();
-            const customer: Customer = await this.customersDataModel.create( customerId, fullName, email );
+            const customer = await this.customersModel.create( customerId, fullName, email );
             return res.json(customer);
         }
         catch (e) {
@@ -46,7 +45,7 @@ class Customers {
     async update (req: Request, res: Response) {
         const { fullName, email } = req.body;
         const customerId = req.params.id;
-        const updatedCount = await this.customersDataModel.update( customerId, fullName, email );
+        const updatedCount = await this.customersModel.update( customerId, fullName, email );
         if (updatedCount[0] === 1) {
             return res.json({ customerId, fullName, email });
         }
@@ -58,7 +57,7 @@ class Customers {
 
     async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const deletedCount = await this.customersDataModel.delete(id);
+        const deletedCount = await this.customersModel.delete(id);
         if (deletedCount === 1) {
             return res.json({id});
         }

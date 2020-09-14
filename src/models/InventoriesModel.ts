@@ -1,35 +1,35 @@
 import { sequelize } from './../config/db';
-import { Sequelize } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
-import ProductsDataModel  from './ProductsDataModel';
+import { HttpStatusCode } from './../models/types';
+import ProductsModel  from './ProductsModel';
 
-class InventoriesDataModel {
+class InventoriesModel {
     public inventory = sequelize.define('inventory', {
         quantity: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER
         },
         color: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         size: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         productId: {
-            type: Sequelize.UUID,
+            type: DataTypes.UUID,
         },
         inventoryId: {
-            type: Sequelize.UUID,
+            type: DataTypes.UUID,
             primaryKey: true,
         }
     },{
         timestamps: false,
         tableName: 'inventory'
     });
-    productsDataModel = new ProductsDataModel();
+    productsModel = new ProductsModel();
 
     constructor() {
-        this.inventory.belongsTo(this.productsDataModel.product, {foreignKey: 'productId'}); 
+        this.inventory.belongsTo(this.productsModel.product, {foreignKey: 'productId'}); 
     }
 
     convertToProducts (total, item) {
@@ -54,7 +54,7 @@ class InventoriesDataModel {
             const inventories = await this.inventory.findAll({ 
                 where: { productId },
                 include: [{ 
-                    model: this.productsDataModel.product, required: true
+                    model: this.productsModel.product, required: true
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
@@ -63,7 +63,7 @@ class InventoriesDataModel {
         {
             const inventories = await this.inventory.findAll({
                 include: [{ 
-                    model: this.productsDataModel.product, required: true
+                    model: this.productsModel.product, required: true
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
@@ -123,4 +123,4 @@ class InventoriesDataModel {
     }
 };
 
-export default InventoriesDataModel;
+export default InventoriesModel;

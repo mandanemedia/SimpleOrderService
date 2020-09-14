@@ -231,7 +231,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "4621f692-0da5-45c6-9b28-68c15689e87f"
                     }
                 ],
                 "responses": {

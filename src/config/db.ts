@@ -7,7 +7,7 @@ const dbSettings = {
   server: process.env.DB_SERVER || 'localhost'
 };
 
-export const sequelize = new Sequelize(dbSettings.database, dbSettings.user, dbSettings.password, {
+const options = {
     host: dbSettings.server,
     dialect: 'postgres',
     pool: {
@@ -16,6 +16,7 @@ export const sequelize = new Sequelize(dbSettings.database, dbSettings.user, dbS
         idle: 10000,
         acquire: 30000,
     },
-    underscored: false,
     freezeTableName: true,
-});
+    operatorsAliases: false
+}
+export const sequelize = new Sequelize(dbSettings.database, dbSettings.user, dbSettings.password, options);

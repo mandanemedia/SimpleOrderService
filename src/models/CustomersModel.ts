@@ -1,21 +1,23 @@
 import { sequelize } from './../config/db';
-import { Sequelize } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import HttpStatusCode  from './../models/HttpStatusCode';
+import { HttpStatusCode } from './../models/types';
 
-class CustomersDataModel {
+//TODO revise https://vivacitylabs.com/setup-typescript-sequelize/ or https://michalzalecki.com/using-sequelize-with-typescript/
+
+class CustomersModel {
     public customer = sequelize.define('customer', {
         fullName: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         email: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             validate: {
                 isEmail: true,
             }
         },
         customerId: {
-            type: Sequelize.UUID,
+            type: DataTypes.UUID,
             primaryKey: true,
         }
     },{
@@ -70,4 +72,4 @@ class CustomersDataModel {
     }
 };
 
-export default CustomersDataModel;
+export default CustomersModel;
