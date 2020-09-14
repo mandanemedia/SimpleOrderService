@@ -106,14 +106,9 @@ Then visit `http://localhost:3000/swagger/#`
 
 ## Documentation 
 
-Defined paths:
-* Products
-* Inventories
-* Customers
-* Orders
-* OrderItems
-
-To view the list of all endpoints go to the swagger.
+To view the full documentation go to the swagger.
+![Swagger1](resources/Swagger1.png)
+![Swagger2](resources/Swagger2.png)
 
 
 ## Assumptions
