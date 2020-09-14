@@ -16,18 +16,23 @@ class Inventories {
             return res.json(await this.inventoriesModel.read(productId));
         }
         catch (e) {
-            throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            throw e;
         }
     }
 
     async readById (req: Request, res: Response) {
-        const id = req.params.id;
-        const inventory = await this.inventoriesModel.readById(id);
-        if (!!inventory) {
-            return res.json(inventory);
+        try{
+            const id = req.params.id;
+            const inventory = await this.inventoriesModel.readById(id);
+            if (!!inventory) {
+                return res.json(inventory);
+            }
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 
@@ -40,30 +45,41 @@ class Inventories {
             return res.json(inventory);
         }
         catch (e) {
-            throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            throw e;
         }
     }
 
     async update (req: Request, res: Response) {
-        const { productId, color, size, quantity } = req.body;
-        const inventoryId = req.params.id;
-        const updatedCount = await this.inventoriesModel.update( inventoryId, productId, color, size, quantity);
-        if (updatedCount[0] === 1) {
-            return res.json({ inventoryId, productId, color, size, quantity });
+        try{
+            const { productId, color, size, quantity } = req.body;
+            const inventoryId = req.params.id;
+            const updatedCount = await this.inventoriesModel.update( inventoryId, productId, color, size, quantity);
+            if (updatedCount[0] === 1) {
+                return res.json({ inventoryId, productId, color, size, quantity });
+            }
+            //TODO need to handle cannot update the record
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 
     async delete (req: Request, res: Response) {
-        const id = req.params.id;
-        const deletedCount = await this.inventoriesModel.delete(id);
-        if (deletedCount === 1) {
-            return res.json({id});
+        try{
+            const id = req.params.id;
+            const deletedCount = await this.inventoriesModel.delete(id);
+            if (deletedCount === 1) {
+                return res.json({id});
+            }
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 };

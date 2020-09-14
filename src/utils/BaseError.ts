@@ -3,8 +3,9 @@ import { HttpStatusCode } from './../models/types';
 class BaseError extends Error {
     public readonly httpCode: HttpStatusCode;
     public readonly type: string;
+    public readonly details: string;
 
-    constructor(httpCode: HttpStatusCode) {
+    constructor(httpCode: HttpStatusCode, details: String = "") {
         switch(httpCode) { 
             case HttpStatusCode.BAD_REQUEST: { 
                 super('BAD REQUEST');
@@ -36,6 +37,7 @@ class BaseError extends Error {
         Object.setPrototypeOf(this, new.target.prototype);
 
         this.type = this.message;
+        this.details = details;
         Error.captureStackTrace(this);
     }
 }

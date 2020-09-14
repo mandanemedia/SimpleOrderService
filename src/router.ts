@@ -4,6 +4,8 @@ import handleError from './utils/handleError';
 import ProductsRoutes from './routes/ProductsRoutes';
 import InventoriesRoutes from './routes/InventoriesRoutes';
 import CustomersRoutes from './routes/CustomersRoutes';
+import OrderItemsRoutes from './routes/OrderItemsRoutes';
+import OrdersRoutes from './routes/OrdersRoutes';
 
 class Router {
 
@@ -18,11 +20,17 @@ class Router {
         server.use('/inventories', inventoriesRoutes.router );
         const customersRoutes = new CustomersRoutes(server);
         server.use('/customers', customersRoutes.router );
+        const orderItemsRoutes = new OrderItemsRoutes(server);
+        server.use('/orderitems', orderItemsRoutes.router );
+        const ordersRoutes = new OrdersRoutes(server);
+        server.use('/orders', ordersRoutes.router );
 
-        //add real all from order
-        //create an order
+        //TODO add real all from order
+        //TODO make transaction query for order Items
+        //TODO reject delete order if orderitems is not empty
         //TODO update sql files
-        //TODO add orders end points
+        //TODO delete order even if orderitems is not empty using ts
+        //TODO add basic Unit test using JEST
 
         server.use((err, req, res, next) => {
             handleError(err, res);

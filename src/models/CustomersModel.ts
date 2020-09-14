@@ -38,18 +38,41 @@ class CustomersModel {
     }
     
     async create (customerId :string, fullName: string, email: string ) {
-        return await this.customer.create({ customerId, fullName, email});
+        try{
+             return await this.customer.create({ customerId, fullName, email});
+        }
+        catch (e) {
+            if( e.name == "SequelizeForeignKeyConstraintError" )
+            {
+                throw new BaseError(HttpStatusCode.BAD_REQUEST);
+            }
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
     }
 
     async update (customerId :string, fullName: string, email: string ) {
-        return await this.customer.update(
-            { fullName, email }, 
-            {
-                where: {
-                    customerId: customerId
+        try{
+            return await this.customer.update(
+                { fullName, email }, 
+                {
+                    where: {
+                        customerId: customerId
+                    }
                 }
+            );
+        }
+        catch (e) {
+            if( e.name == "SequelizeForeignKeyConstraintError" )
+            {
+                throw new BaseError(HttpStatusCode.BAD_REQUEST);
             }
-        );
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
+
     }
 
     async delete (customerId:string) {

@@ -15,18 +15,23 @@ class Customers {
             return res.json(await this.customersModel.read());
         }
         catch (e) {
-            throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            throw e;
         }
     }
 
     async readById (req: Request, res: Response) {
-        const id = req.params.id;
-        const customer = await this.customersModel.readById(id);
-        if (!!customer) {
-            return res.json(customer);
+        try{
+            const id = req.params.id;
+            const customer = await this.customersModel.readById(id);
+            if (!!customer) {
+                return res.json(customer);
+            }
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 
@@ -38,31 +43,41 @@ class Customers {
             return res.json(customer);
         }
         catch (e) {
-            throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            throw e;
         }
     }
 
     async update (req: Request, res: Response) {
-        const { fullName, email } = req.body;
-        const customerId = req.params.id;
-        const updatedCount = await this.customersModel.update( customerId, fullName, email );
-        if (updatedCount[0] === 1) {
-            return res.json({ customerId, fullName, email });
+        try{
+            const { fullName, email } = req.body;
+            const customerId = req.params.id;
+            const updatedCount = await this.customersModel.update( customerId, fullName, email );
+            if (updatedCount[0] === 1) {
+                return res.json({ customerId, fullName, email });
+            }
+            //TODO need to handle cannot update the record
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        //TODO need to handle cannot update the record
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 
     async delete (req: Request, res: Response) {
-        const id = req.params.id;
-        const deletedCount = await this.customersModel.delete(id);
-        if (deletedCount === 1) {
-            return res.json({id});
+        try{
+            const id = req.params.id;
+            const deletedCount = await this.customersModel.delete(id);
+            if (deletedCount === 1) {
+                return res.json({id});
+            }
+            else {
+                throw new BaseError(HttpStatusCode.NOT_FOUND);
+            }
         }
-        else {
-            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        catch (e) {
+            throw e;
         }
     }
 };

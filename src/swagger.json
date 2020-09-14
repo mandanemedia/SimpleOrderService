@@ -221,12 +221,11 @@
                 "tags": [
                     "Inventories"
                 ],
-                "summary": "Get all inventories in system",
+                "summary": "Get all inventories in system, can filter by Product id",
                 "parameters": [
                     {
                         "in": "query",
                         "name": "productId",
-                        "required": true,
                         "description": "Product with id",
                         "schema": {
                             "$ref": "#/components/schemas/id"
@@ -625,7 +624,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OrderFull"
+                                    "$ref": "#/components/schemas/OrderResponse"
                                 }
                             }
                         }
@@ -652,7 +651,7 @@
                 "tags": [
                     "Orders"
                 ],
-                "summary": "Get order with given order ID",
+                "summary": "Get order with given order id",
                 "parameters": [
                     {
                         "in": "path",
@@ -767,14 +766,25 @@
                 "tags": [
                     "OrderItems"
                 ],
-                "summary": "Get all OrderItems in system",
+                "summary": "Get all OrderItems in system, can filter by orderID",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "orderId",
+                        "description": "Order with id",
+                        "schema": {
+                            "$ref": "#/components/schemas/id"
+                        },
+                        "example": "1164ef5c-1657-46b2-bb36-c74080e02b11"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OrderItems"
+                                    "$ref": "#/components/schemas/OrderFull"
                                 }
                             }
                         }
@@ -849,7 +859,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OrderItemFull"
+                                    "$ref": "#/components/schemas/OrderFull"
                                 }
                             }
                         }
@@ -1187,10 +1197,7 @@
             "Order": {
                 "type": "object",
                 "properties": {
-                    "fullName": {
-                        "type": "string"
-                    },
-                    "email": {
+                    "customerId": {
                         "type": "string"
                     },
                     "date": {
@@ -1201,8 +1208,30 @@
                     }
                 },
                 "example": {
-                    "fullName": "Ryan Samberg",
-                    "email": "Ryan.Samberg.test@gmail.com",
+                    "customerId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "date": "2020-09-12",
+                    "status": "Shipped"
+                }
+            },
+            "OrderResponse": {
+                "type": "object",
+                "properties": {
+                    "orderId": {
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "orderId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
+                    "customerId": "e6b61600-1afe-4d0d-9ff9-e9a2d3caed01",
                     "date": "2020-09-12",
                     "status": "Shipped"
                 }

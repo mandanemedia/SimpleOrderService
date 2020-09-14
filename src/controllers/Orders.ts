@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
-import { Product, HttpStatusCode } from './../models/types';
+import { HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
 import BaseError from './../utils/BaseError';
-import ProductsModel from './../models/ProductsModel';
+import OrdersModel from './../models/OrdersModel';
 
-class Products {
-    productsModel: ProductsModel;
+class Orders {
+    ordersModel: OrdersModel;
     constructor() {
-        this.productsModel = new ProductsModel();
+        this.ordersModel = new OrdersModel();
     }
     
     async read (req: Request, res: Response) {
         try {
-            return res.json(await this.productsModel.read());
+            return res.json(await this.ordersModel.read());
         }
         catch (e) {
             throw e;
@@ -20,11 +20,11 @@ class Products {
     }
 
     async readById (req: Request, res: Response) {
-        try{
+        try {
             const id = req.params.id;
-            const product = await this.productsModel.readById(id);
-            if (!!product) {
-                return res.json(product);
+            const order = await this.ordersModel.readById(id);
+            if (!!order) {
+                return res.json(order);
             }
             else {
                 throw new BaseError(HttpStatusCode.NOT_FOUND);
@@ -37,10 +37,10 @@ class Products {
 
     async create (req: Request, res: Response) {
         try {
-            const { name, description, price } = req.body;
-            const productId = uuid();
-            const product = await this.productsModel.create( productId, name, description, price);
-            return res.json(product);
+            const { customerId, date, status } = req.body;
+            const orderId = uuid();
+            const order = await this.ordersModel.create( orderId, customerId, date, status);
+            return res.json(order);
         }
         catch (e) {
             throw e;
@@ -48,12 +48,12 @@ class Products {
     }
 
     async update (req: Request, res: Response) {
-        try{
-            const { name, description, price } = req.body;
-            const productId = req.params.id;
-            const updatedCount = await this.productsModel.update(productId, name, description, price );
+        try {
+            const { customerId, date, status } = req.body;
+            const orderId = req.params.id;
+            const updatedCount = await this.ordersModel.update( orderId, customerId, date, status);
             if (updatedCount[0] === 1) {
-                return res.json({ productId, name, description, price });
+                return res.json({ orderId, customerId, date, status });
             }
             //TODO need to handle cannot update the record
             else {
@@ -66,9 +66,9 @@ class Products {
     }
 
     async delete (req: Request, res: Response) {
-        try{
+        try {
             const id = req.params.id;
-            const deletedCount = await this.productsModel.delete(id);
+            const deletedCount = await this.ordersModel.delete(id);
             if (deletedCount === 1) {
                 return res.json({id});
             }
@@ -82,4 +82,4 @@ class Products {
     }
 };
 
-export default Products;
+export default Orders;

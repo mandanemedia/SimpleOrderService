@@ -77,7 +77,18 @@ class InventoriesModel {
     }
     
     async create (inventoryId :string, productId :string, color :string, size:string, quantity: number ) {
-        return await this.inventory.create({ inventoryId, productId, color, size, quantity});
+        try{
+            return await this.inventory.create({ inventoryId, productId, color, size, quantity});
+        }
+        catch (e) {
+            if( e.name == "SequelizeForeignKeyConstraintError" )
+            {
+                throw new BaseError(HttpStatusCode.BAD_REQUEST);
+            }
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }
     }
 
     async update (inventoryId :string, productId :string, color :string, size:string, quantity: number ) {

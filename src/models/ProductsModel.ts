@@ -36,7 +36,18 @@ class ProductsModel {
     }
     
     async create (productId :string, name: string, description: string, price: number ) {
-        return await this.product.create({ productId, name, description, price});
+        try{
+            return await this.product.create({ productId, name, description, price});
+        }
+        catch(e){
+            if( e.name == "SequelizeForeignKeyConstraintError")
+            {
+                throw new BaseError(HttpStatusCode.BAD_REQUEST);
+            }
+            else{
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
+            }
+        }  
     }
 
     async update (productId :string, name: string, description: string, price: number ) {
