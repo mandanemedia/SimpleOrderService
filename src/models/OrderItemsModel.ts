@@ -2,7 +2,6 @@ import BaseError from './../utils/BaseError';
 import { HttpStatusCode } from './/types';
 import { order, orderItem, inventory } from './dbModels';
 import { sequelize } from './../config/db';
-import { Sequelize } from 'sequelize';
 
 class OrderItems {
 
@@ -32,6 +31,17 @@ class OrderItems {
         });
         if (! orderRecord) {
             throw new BaseError(HttpStatusCode.BAD_REQUEST, "orderId is not valid");
+        }
+    }
+
+    async verifyOrderItemId ( orderItemId ) {
+        const orderItemRecord = await orderItem.findOne({
+            where: {
+                orderItemId: orderItemId
+            },
+        });
+        if (! orderItemRecord) {
+            throw new BaseError(HttpStatusCode.BAD_REQUEST, "orderItemId is not valid");
         }
     }
 
@@ -101,11 +111,7 @@ class OrderItems {
             return orderRecod;
         }
         catch (e) {
-            if (transaction)  { 
-                await transaction.rollback();
-            }
-            console.log("-----------");
-            console.log(e.name);
+            await transaction.rollback();
             if(e instanceof BaseError)
             {
                 throw e;
@@ -114,7 +120,6 @@ class OrderItems {
                 throw new BaseError(HttpStatusCode.CONFLICT, "combination of inventoryId, orderId should be unique!");
             }
             else{
-                console.log(e);
                 throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
             }
         }
@@ -147,17 +152,48 @@ class OrderItems {
         }
     }
 
-    //TODO convert it to transactional query to update the inventory 
     async delete (orderItemId:string) {
+        const transaction = await sequelize.transaction();
         try{
-            return await orderItem.destroy({
+            await this.verifyOrderItemId( orderItemId );
+
+            const orderItemRecord = await orderItem.findOne({
                 where: {
                     orderItemId: orderItemId
-                }
+                },
+                lock: transaction.LOCK.UPDATE,
+                transaction: transaction
             });
+
+            const inventoryRecord = await inventory.findOne({
+                where: {
+                    inventoryId: orderItemRecord.inventoryId
+                },
+                lock: transaction.LOCK.UPDATE,
+                transaction: transaction
+            });
+
+            inventoryRecord.quantity += orderItemRecord.quantity;
+
+            await inventoryRecord.save({transaction: transaction});
+
+            const deletedId = await orderItem.destroy({
+                where: {
+                    orderItemId: orderItemId
+                },
+                transaction: transaction
+            });
+
+            await transaction.commit();
+            return deletedId;
         }
         catch(e){
-            if( e.name == "SequelizeForeignKeyConstraintError")
+            await transaction.rollback();
+            if(e instanceof BaseError)
+            {
+                throw e;
+            }
+            else if( e.name == "SequelizeForeignKeyConstraintError")
             {
                 throw new BaseError(HttpStatusCode.CONFLICT);
             }
