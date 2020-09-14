@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/server.js\""
+    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/server.js\"",
+    "test": "jest"
   },
   "keywords": [
     "typescript",
@@ -19,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "jest": "^26.4.2",
     "joi": "^17.2.1",
     "pg": "^8.3.3",
     "sequelize": "^6.3.5",
