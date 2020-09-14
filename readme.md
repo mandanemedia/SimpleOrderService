@@ -118,3 +118,10 @@ To view the full documentation go to the swagger.
 * Guid ID is the key in the DB, it should not expose to client side, because of simplicity, leave it out as is for now. 
 
 * Inventory is splited up from Product because of the data domain. i.e. Lululemon commuter pants is the name of product, while its sizes and colors along with the quantity are stored in the invenotry.
+
+
+## TODO
+* TODO transaction only done for create and delete orderItems, need to be added to update orderItems.
+* TODO All join tables  like /orders/{id} need to be tested because of required: false.
+* TODO Add more error handeling
+* TODO add basic Unit test using JEST

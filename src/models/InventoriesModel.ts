@@ -26,7 +26,7 @@ class InventoriesModel {
             const inventories = await inventory.findAll({ 
                 where: { productId },
                 include: [{ 
-                    model: product, required: true
+                    model: product, required: false
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
@@ -35,7 +35,7 @@ class InventoriesModel {
         {
             const inventories = await inventory.findAll({
                 include: [{ 
-                    model: product, required: true
+                    model: product, required: false
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
@@ -46,7 +46,7 @@ class InventoriesModel {
         return await inventory.findOne({
             where: {  inventoryId: inventoryId },
             include: [{ 
-                model: product, required: true
+                model: product, required: false
             }]
         });
     }
@@ -68,7 +68,7 @@ class InventoriesModel {
 
     async update (inventoryId :string, productId :string, color :string, size:string, quantity: number ) {
         try{
-                return await inventory.update(
+            return await inventory.update(
                 { color, size, quantity}, 
                 {
                     where: {

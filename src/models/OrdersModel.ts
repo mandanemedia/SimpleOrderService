@@ -8,7 +8,7 @@ class OrdersModel {
         try{
             return await order.findAll({
                 include: [{ 
-                    model: orderItem, required: true
+                    model: orderItem, required: false
                 }]
             });
         }
@@ -28,7 +28,7 @@ class OrdersModel {
             return await order.findOne({
                 where: {  orderId: orderId },
                 include: [{ 
-                    model: orderItem, required: true
+                    model: orderItem, required: false
                 }]
             });
         }

@@ -17,6 +17,7 @@ export const customer = sequelize.define('customer', {
         primaryKey: true,
     }
 },{
+    freezeTableName: true,
     timestamps: false,
     tableName: 'customer'
 });
@@ -36,6 +37,7 @@ export const product = sequelize.define('product', {
         primaryKey: true,
     }
 },{
+    freezeTableName: true,
     timestamps: false,
     tableName: 'product'
 });
@@ -58,6 +60,7 @@ export const inventory = sequelize.define('inventory', {
         primaryKey: true,
     }
 },{
+    freezeTableName: true,
     timestamps: false,
     tableName: 'inventory'
 });
@@ -77,6 +80,7 @@ export const order = sequelize.define('order', {
         primaryKey: true,
     }
 },{
+    freezeTableName: true,
     timestamps: false,
     tableName: 'order'
 });
@@ -97,6 +101,7 @@ export const  orderItem = sequelize.define('orderItem', {
         primaryKey: true,
     }
 },{
+    freezeTableName: true,
     timestamps: false,
     tableName: 'orderItem'
 });

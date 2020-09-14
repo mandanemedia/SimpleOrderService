@@ -25,10 +25,6 @@ class Router {
         const ordersRoutes = new OrdersRoutes(server);
         server.use('/orders', ordersRoutes.router );
 
-        //TODO make transaction query for order Items
-        //TODO delete order even if orderitems is not empty using ts
-        //TODO add basic Unit test using JEST
-
         server.use((err, req, res, next) => {
             handleError(err, res);
         });  

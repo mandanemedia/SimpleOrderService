@@ -55,7 +55,7 @@ BEGIN;
 INSERT INTO "public"."inventory" VALUES ('4621f692-0da5-45c6-9b28-68c15689e87f', 50, 'Black', 'Medium', '29ccdff9-4ae5-46d9-a613-ca14c80558fc');
 INSERT INTO "public"."inventory" VALUES ('4621f692-0da5-45c6-9b28-68c15689e87f', 50, 'Black', 'Large', '8b2d765f-4770-4e7a-aa65-11d3901f9f17');
 INSERT INTO "public"."inventory" VALUES ('4621f692-0da5-45c6-9b28-68c15689e87f', 50, 'Gray', 'Small', '872483d2-594c-4776-a4ad-e5fd6b72c63f');
-INSERT INTO "public"."inventory" VALUES ('d85b7583-e410-419a-92fb-7708cc17e01a', 50, 'Black', 'xxxxxx', '0ff470ec-10bb-4fee-a3f6-c8aa240131a4');
+INSERT INTO "public"."inventory" VALUES ('d85b7583-e410-419a-92fb-7708cc17e01a', 50, 'Black', 'default', '0ff470ec-10bb-4fee-a3f6-c8aa240131a4');
 COMMIT;
 
 -- ----------------------------
