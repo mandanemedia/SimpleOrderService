@@ -1,5 +1,5 @@
 import { sequelize } from './../config/db';
-import { Sequelize, DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
 import { HttpStatusCode } from './../models/types';
 

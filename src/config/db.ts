@@ -17,6 +17,6 @@ const options = {
         acquire: 30000,
     },
     freezeTableName: true,
-    operatorsAliases: false
+    operatorsAliases: 0
 }
 export const sequelize = new Sequelize(dbSettings.database, dbSettings.user, dbSettings.password, options);
