@@ -49,6 +49,7 @@ class InventoriesModel {
         }
         return total;
     };
+
     async read (productId) {
         if(!!productId){
             const inventories = await this.inventory.findAll({ 
@@ -72,7 +73,10 @@ class InventoriesModel {
     
     async readById (inventoryId:string) {
         return await this.inventory.findOne({
-            where: {  inventoryId: inventoryId }
+            where: {  inventoryId: inventoryId },
+            include: [{ 
+                model: this.productsModel.product, required: true
+            }]
         });
     }
     

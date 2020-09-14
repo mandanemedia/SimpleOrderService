@@ -116,7 +116,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "4621f692-0da5-45c6-9b28-68c15689e87f"
                     }
                 ],
                 "responses": {
@@ -305,7 +305,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "29ccdff9-4ae5-46d9-a613-ca14c80558fc"
                     }
                 ],
                 "responses": {
@@ -483,7 +483,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "4bfcdc1f-dc2f-4364-96df-8d241dbdb8fa"
                     }
                 ],
                 "responses": {
@@ -661,7 +661,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "1164ef5c-1657-46b2-bb36-c74080e02b11"
                     }
                 ],
                 "responses": {
@@ -850,7 +850,7 @@
                         "schema": {
                             "$ref": "#/components/schemas/id"
                         },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
+                        "example": "2164ef5c-1657-46b2-bb36-c74080e02b12"
                     }
                 ],
                 "responses": {
@@ -859,7 +859,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OrderFull"
+                                    "$ref": "#/components/schemas/OrderItem"
                                 }
                             }
                         }

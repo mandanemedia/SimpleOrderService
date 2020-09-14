@@ -5,7 +5,7 @@ class BaseError extends Error {
     public readonly type: string;
     public readonly details: string;
 
-    constructor(httpCode: HttpStatusCode, details: String = "") {
+    constructor(httpCode: HttpStatusCode, details: string = "") {
         switch(httpCode) { 
             case HttpStatusCode.BAD_REQUEST: { 
                 super('BAD REQUEST');

@@ -33,22 +33,43 @@ class OrderItems {
         this.orderItem.belongsTo(this.inventoriesModel.inventory, {foreignKey: 'inventoryId'}); 
     }
 
+
+    convertToOrders (total, item) {
+        const { quantity, inventoryId, orderId, orderItemId, order } = item;
+        const existingOrder = total.find( order => order.orderId == orderId);
+        if(existingOrder){
+            existingOrder.orderItems.push({ quantity, inventoryId, orderId, orderItemId });
+        }
+        else{
+            total.push({ 
+                orderId: order.orderId,
+                date: order.date, 
+                customerId: order.customerId, 
+                status: order.status,
+                orderItems: [{ quantity, inventoryId, orderId, orderItemId }] 
+            });
+        }
+        return total;
+    };
+
     async read (orderId) {
         if(!!orderId){
-            return await this.orderItem.findAll({ 
+            const orderItems = await this.orderItem.findAll({ 
                 where: { orderId },
                 include: [{ 
                     model: this.ordersModel.order, required: true
                 }]
             });
+            return orderItems.reduce(this.convertToOrders, []);
         }
         else
         {
-            return await this.orderItem.findAll({
+            const orderItems =  await this.orderItem.findAll({
                 include: [{ 
                     model: this.ordersModel.order, required: true
                 }]
             });
+            return orderItems.reduce(this.convertToOrders, []);
         }
     }
     
@@ -56,8 +77,12 @@ class OrderItems {
         return await this.orderItem.findOne({
             where: {
                 orderItemId: orderItemId
-            }
+            },
+            include: [{ 
+                model: this.ordersModel.order, required: true
+            }]
         });
+        // return [orderItem].reduce(this.convertToOrders, [])[0];
     }
     
     //TODO convert it to transactional query to update the inventory and handel reject creating order 
