@@ -15,7 +15,7 @@ class InventoriesRoutes {
             productId: Joi.string().guid().required(),
             color: Joi.string().required(),
             size: Joi.string().required(),
-            quantity: Joi.number().required()
+            quantity: Joi.number().positive().required()
         });
 
         //read all

@@ -51,15 +51,14 @@ class OrderItems {
 
     async update (req: Request, res: Response) {
         try {
-            const { orderId, inventoryId, quantity } = req.body;
+            const { quantity } = req.body;
             const orderItemId = req.params.id;
-            const updatedCount = await this.orderItemsModel.update( orderItemId, orderId, inventoryId, quantity );
-            if (updatedCount[0] === 1) {
-                return res.json({ orderItemId, orderId, inventoryId, quantity });
+            const updatedCount = await this.orderItemsModel.update( orderItemId, quantity );
+            if (!! updatedCount ) {
+                return res.json({ orderItemId, quantity });
             }
-            //TODO need to handle cannot update the record
             else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
+                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
             }
         }
         catch (e) {

@@ -125,28 +125,54 @@ class OrderItems {
         }
     }
 
-    //TODO convert it to transactional query to update the inventory and handel reject creating order 
-    async update (orderItemId: string, orderId :string, inventoryId :string, quantity: number ) {
+    async update (orderItemId: string, newQuantity: number ) {
+        const transaction = await sequelize.transaction();
         try{
-            return await orderItem.update(
-                { orderId, inventoryId, quantity }, 
-                {
-                    where: {
-                        orderItemId: orderItemId
-                    }
-                }
-            );
+            await this.verifyOrderItemId( orderItemId );
+
+            const orderItemRecord = await orderItem.findOne({
+                where: {
+                    orderItemId: orderItemId
+                },
+                lock: transaction.LOCK.UPDATE,
+                transaction: transaction
+            });
+
+            const inventoryRecord = await inventory.findOne({
+                where: {
+                    inventoryId: orderItemRecord.inventoryId
+                },
+                lock: transaction.LOCK.UPDATE,
+                transaction: transaction
+            });
+
+            const delta = orderItemRecord.quantity - newQuantity;
+            if( delta > inventoryRecord.quantity )
+            {
+                throw new BaseError(HttpStatusCode.BAD_REQUEST, "Inventory levels are insufficient");
+            }
+            else if ( delta == 0){
+                throw new BaseError(HttpStatusCode.BAD_REQUEST, "Nothing to update");
+            }
+            const newInventoryQuantity = inventoryRecord.quantity + delta;
+            
+            inventoryRecord.quantity += delta;
+            await inventoryRecord.save({transaction: transaction});
+
+            orderItemRecord.quantity = newQuantity;
+            const orderItemUpdated = await orderItemRecord.save({transaction: transaction});
+
+            await transaction.commit();
+            return orderItemUpdated;
+
         }
         catch(e){
-            if( e.name == "SequelizeForeignKeyConstraintError" && e.parent.constraint == "order_product_inventoryId_fkey")
+            await transaction.rollback();
+            if(e instanceof BaseError)
             {
-                throw new BaseError(HttpStatusCode.BAD_REQUEST, "inventoryId is not valid");
+                throw e;
             }
-            else if ( e.name == "SequelizeForeignKeyConstraintError" && e.parent.constraint == "order_product_orderId_fkey")
-            {
-                throw new BaseError(HttpStatusCode.BAD_REQUEST, "orderId is not valid");
-            }
-            else {
+            else{
                 throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
             }
         }

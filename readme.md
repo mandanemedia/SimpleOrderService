@@ -121,7 +121,7 @@ To view the full documentation go to the swagger.
 
 
 ## TODO
-* TODO transaction only done for create and delete orderItems, need to be added to update orderItems.
+* TODO add basic Unit test using JEST
 * TODO All join tables  like /orders/{id} need to be tested because of required: false.
 * TODO Add more error handeling
-* TODO add basic Unit test using JEST
+* TODO decouple controler from modal by add interface to both for data interaction 
