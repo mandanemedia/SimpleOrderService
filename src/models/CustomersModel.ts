@@ -1,36 +1,17 @@
-import { sequelize } from './../config/db';
-import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import { HttpStatusCode } from './../models/types';
+import { HttpStatusCode } from './types';
+import { customer } from './dbModels';
 
 //TODO revise https://vivacitylabs.com/setup-typescript-sequelize/ or https://michalzalecki.com/using-sequelize-with-typescript/
 
 class CustomersModel {
-    public customer = sequelize.define('customer', {
-        fullName: {
-            type: DataTypes.STRING
-        },
-        email: {
-            type: DataTypes.STRING,
-            validate: {
-                isEmail: true,
-            }
-        },
-        customerId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-        }
-    },{
-        timestamps: false,
-        tableName: 'customer'
-    });
 
     async read () {
-        return await this.customer.findAll();
+        return await customer.findAll();
     }
     
     async readById (customerId:string) {
-        return await this.customer.findOne({
+        return await customer.findOne({
             where: {
                 customerId: customerId
             }
@@ -39,7 +20,7 @@ class CustomersModel {
     
     async create (customerId :string, fullName: string, email: string ) {
         try{
-             return await this.customer.create({ customerId, fullName, email});
+             return await customer.create({ customerId, fullName, email});
         }
         catch (e) {
             if( e.name == "SequelizeForeignKeyConstraintError" )
@@ -54,7 +35,7 @@ class CustomersModel {
 
     async update (customerId :string, fullName: string, email: string ) {
         try{
-            return await this.customer.update(
+            return await customer.update(
                 { fullName, email }, 
                 {
                     where: {
@@ -77,7 +58,7 @@ class CustomersModel {
 
     async delete (customerId:string) {
         try{
-            return await this.customer.destroy({
+            return await customer.destroy({
                 where: {
                     customerId: customerId
                 }

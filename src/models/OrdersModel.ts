@@ -1,31 +1,16 @@
-import { sequelize } from './../config/db';
-import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import { HttpStatusCode } from './../models/types';
+import { HttpStatusCode } from './types';
+import { order, orderItem } from './dbModels';
 
 class OrdersModel {
-    public order = sequelize.define('order', {
-        date: {
-            type: DataTypes.DATE
-        },
-        customerId: {
-            type: DataTypes.UUID,
-        },
-        status: {
-            type: DataTypes.STRING
-        },
-        orderId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-        }
-    },{
-        timestamps: false,
-        tableName: 'order'
-    });
 
     async read () {
         try{
-            return await this.order.findAll({});
+            return await order.findAll({
+                include: [{ 
+                    model: orderItem, required: true
+                }]
+            });
         }
         catch(e){
             if( e.name == "SequelizeForeignKeyConstraintError")
@@ -40,8 +25,11 @@ class OrdersModel {
     
     async readById (orderId:string) {
         try{
-            return await this.order.findOne({
-                where: {  orderId: orderId }
+            return await order.findOne({
+                where: {  orderId: orderId },
+                include: [{ 
+                    model: orderItem, required: true
+                }]
             });
         }
         catch(e){
@@ -57,7 +45,7 @@ class OrdersModel {
     
     async create (orderId :string, customerId :string, date :Date, status:string ) {
         try{
-            return await this.order.create({ orderId, customerId, date, status});
+            return await order.create({ orderId, customerId, date, status});
         }
         catch(e){
             if( e.name == "SequelizeForeignKeyConstraintError")
@@ -72,7 +60,7 @@ class OrdersModel {
 
     async update (orderId :string, customerId :string, date :Date, status:string ) {
         try{
-                return await this.order.update(
+                return await order.update(
                 { customerId, date, status }, 
                 {
                     where: {
@@ -94,7 +82,7 @@ class OrdersModel {
 
     async delete (orderId:string) {
         try{
-            return await this.order.destroy({
+            return await order.destroy({
                 where: {
                     orderId: orderId
                 }

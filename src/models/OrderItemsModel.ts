@@ -1,38 +1,8 @@
-import { sequelize } from './../config/db';
-import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import { HttpStatusCode } from './../models/types';
-import OrdersModel  from './OrdersModel';
-import InventoriesModel  from './InventoriesModel';
+import { HttpStatusCode } from './/types';
+import { order, orderItem } from './dbModels';
 
 class OrderItems {
-    public orderItem = sequelize.define('orderItem', {
-        quantity: {
-            type: DataTypes.INTEGER
-        },
-        inventoryId: {
-            type: DataTypes.UUID
-        },
-        orderId : {
-            type: DataTypes.UUID
-        },
-        orderItemId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-        }
-    },{
-        timestamps: false,
-        tableName: 'orderItem'
-    });
-
-    ordersModel = new OrdersModel();
-    inventoriesModel = new InventoriesModel();
-
-    constructor() {
-        this.orderItem.belongsTo(this.ordersModel.order, {foreignKey: 'orderId'}); 
-        this.orderItem.belongsTo(this.inventoriesModel.inventory, {foreignKey: 'inventoryId'}); 
-    }
-
 
     convertToOrders (total, item) {
         const { quantity, inventoryId, orderId, orderItemId, order } = item;
@@ -54,19 +24,19 @@ class OrderItems {
 
     async read (orderId) {
         if(!!orderId){
-            const orderItems = await this.orderItem.findAll({ 
+            const orderItems = await orderItem.findAll({ 
                 where: { orderId },
                 include: [{ 
-                    model: this.ordersModel.order, required: true
+                    model: order, required: true
                 }]
             });
             return orderItems.reduce(this.convertToOrders, []);
         }
         else
         {
-            const orderItems =  await this.orderItem.findAll({
+            const orderItems =  await orderItem.findAll({
                 include: [{ 
-                    model: this.ordersModel.order, required: true
+                    model: order, required: true
                 }]
             });
             return orderItems.reduce(this.convertToOrders, []);
@@ -74,12 +44,12 @@ class OrderItems {
     }
     
     async readById (orderItemId:string) {
-        return await this.orderItem.findOne({
+        return await orderItem.findOne({
             where: {
                 orderItemId: orderItemId
             },
             include: [{ 
-                model: this.ordersModel.order, required: true
+                model: order, required: true
             }]
         });
         // return [orderItem].reduce(this.convertToOrders, [])[0];
@@ -88,7 +58,7 @@ class OrderItems {
     //TODO convert it to transactional query to update the inventory and handel reject creating order 
     async create (orderItemId: string, orderId :string, inventoryId :string, quantity: number ) {
         try{
-            return await this.orderItem.create({ orderItemId, orderId, inventoryId, quantity });
+            return await orderItem.create({ orderItemId, orderId, inventoryId, quantity });
         }
         catch (e) {
             if( e.name == "SequelizeForeignKeyConstraintError" && e.parent.constraint == "order_product_inventoryId_fkey")
@@ -108,7 +78,7 @@ class OrderItems {
     //TODO convert it to transactional query to update the inventory and handel reject creating order 
     async update (orderItemId: string, orderId :string, inventoryId :string, quantity: number ) {
         try{
-            return await this.orderItem.update(
+            return await orderItem.update(
                 { orderId, inventoryId, quantity }, 
                 {
                     where: {
@@ -135,7 +105,7 @@ class OrderItems {
     //TODO convert it to transactional query to update the inventory 
     async delete (orderItemId:string) {
         try{
-            return await this.orderItem.destroy({
+            return await orderItem.destroy({
                 where: {
                     orderItemId: orderItemId
                 }

@@ -1,34 +1,14 @@
-import { sequelize } from './../config/db';
-import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import { HttpStatusCode } from './../models/types';
+import { HttpStatusCode } from './types';
+import { product } from './dbModels';
 
 class ProductsModel {
-    public product = sequelize.define('product', {
-        name: {
-            type: DataTypes.STRING
-        },
-        description: {
-            type: DataTypes.STRING
-        },
-        price: {
-            type: DataTypes.FLOAT
-        },
-        productId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-        }
-    },{
-        timestamps: false,
-        tableName: 'product'
-    });
-
     async read () {
-        return await this.product.findAll();
+        return await product.findAll();
     }
     
     async readById (productId:string) {
-        return await this.product.findOne({
+        return await product.findOne({
             where: {
                 productId: productId
             }
@@ -37,7 +17,7 @@ class ProductsModel {
     
     async create (productId :string, name: string, description: string, price: number ) {
         try{
-            return await this.product.create({ productId, name, description, price});
+            return await product.create({ productId, name, description, price});
         }
         catch(e){
             if( e.name == "SequelizeForeignKeyConstraintError")
@@ -52,7 +32,7 @@ class ProductsModel {
 
     async update (productId :string, name: string, description: string, price: number ) {
         try{
-            return await this.product.update(
+            return await product.update(
                 { name, description, price }, 
                 {
                     where: {
@@ -74,7 +54,7 @@ class ProductsModel {
 
     async delete (productId:string) {
         try{
-            return await this.product.destroy({
+            return await product.destroy({
                 where: {
                     productId: productId
                 }

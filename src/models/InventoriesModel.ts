@@ -1,37 +1,8 @@
-import { sequelize } from './../config/db';
-import { DataTypes } from 'sequelize';
 import BaseError from './../utils/BaseError';
-import { HttpStatusCode } from './../models/types';
-import ProductsModel  from './ProductsModel';
+import { HttpStatusCode } from './types';
+import { inventory, product } from './dbModels';
 
 class InventoriesModel {
-    public inventory = sequelize.define('inventory', {
-        quantity: {
-            type: DataTypes.INTEGER
-        },
-        color: {
-            type: DataTypes.STRING
-        },
-        size: {
-            type: DataTypes.STRING
-        },
-        productId: {
-            type: DataTypes.UUID,
-        },
-        inventoryId: {
-            type: DataTypes.UUID,
-            primaryKey: true,
-        }
-    },{
-        timestamps: false,
-        tableName: 'inventory'
-    });
-    productsModel = new ProductsModel();
-
-    constructor() {
-        this.inventory.belongsTo(this.productsModel.product, {foreignKey: 'productId'}); 
-    }
-
     convertToProducts (total, item) {
         const { inventoryId, quantity, color, size, productId, product } = item;
         const existingProduct = total.find( product => product.productId == productId);
@@ -52,19 +23,19 @@ class InventoriesModel {
 
     async read (productId) {
         if(!!productId){
-            const inventories = await this.inventory.findAll({ 
+            const inventories = await inventory.findAll({ 
                 where: { productId },
                 include: [{ 
-                    model: this.productsModel.product, required: true
+                    model: product, required: true
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
         }
         else
         {
-            const inventories = await this.inventory.findAll({
+            const inventories = await inventory.findAll({
                 include: [{ 
-                    model: this.productsModel.product, required: true
+                    model: product, required: true
                 }]
             });
             return inventories.reduce(this.convertToProducts, []);
@@ -72,17 +43,17 @@ class InventoriesModel {
     }
     
     async readById (inventoryId:string) {
-        return await this.inventory.findOne({
+        return await inventory.findOne({
             where: {  inventoryId: inventoryId },
             include: [{ 
-                model: this.productsModel.product, required: true
+                model: product, required: true
             }]
         });
     }
     
     async create (inventoryId :string, productId :string, color :string, size:string, quantity: number ) {
         try{
-            return await this.inventory.create({ inventoryId, productId, color, size, quantity});
+            return await inventory.create({ inventoryId, productId, color, size, quantity});
         }
         catch (e) {
             if( e.name == "SequelizeForeignKeyConstraintError" )
@@ -97,7 +68,7 @@ class InventoriesModel {
 
     async update (inventoryId :string, productId :string, color :string, size:string, quantity: number ) {
         try{
-                return await this.inventory.update(
+                return await inventory.update(
                 { color, size, quantity}, 
                 {
                     where: {
@@ -120,7 +91,7 @@ class InventoriesModel {
 
     async delete (inventoryId:string) {
         try{
-            return await this.inventory.destroy({
+            return await inventory.destroy({
                 where: {
                     inventoryId: inventoryId
                 }

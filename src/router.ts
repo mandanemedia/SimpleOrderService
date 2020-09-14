@@ -25,10 +25,7 @@ class Router {
         const ordersRoutes = new OrdersRoutes(server);
         server.use('/orders', ordersRoutes.router );
 
-        //TODO add real all from order
         //TODO make transaction query for order Items
-        //TODO reject delete order if orderitems is not empty
-        //TODO update sql files
         //TODO delete order even if orderitems is not empty using ts
         //TODO add basic Unit test using JEST
 
