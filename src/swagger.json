@@ -869,53 +869,6 @@
                     }
                 }
             },
-            "put": {
-                "summary": "Update OrderItem with given ID",
-                "tags": [
-                    "OrderItems"
-                ],
-                "requestBody": {
-                    "description": "OrderItem Object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/OrderItem"
-                            }
-                        }
-                    }
-                },
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "description": "OrderItem with given id to have the updated properties",
-                        "schema": {
-                            "$ref": "#/components/schemas/id"
-                        },
-                        "example": "6e6de3b7-fcda-4b0e-8fd4-53eee2c34e99"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/OrderItem"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Bad post data."
-                    },
-                    "404": {
-                        "description": "Failed. OrderItem Not found."
-                    }
-                }
-            },
             "delete": {
                 "summary": "Delete OrderItem with given ID",
                 "tags": [

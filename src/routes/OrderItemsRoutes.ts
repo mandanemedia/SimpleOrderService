@@ -57,21 +57,21 @@ class OrderItemsRoutes {
 
 
         //update
-        this.router.put('/:id', async (req, res, next) => {
-            try {
-                const orderItemValidate = orderItemSchema.validate(req.body);
-                if (orderItemValidate.error) {
-                    throw orderItemValidate.error;
-                }
-                const idValidate = idSchema.validate(req.params.id);
-                if (idValidate.error) {
-                    throw idValidate.error;
-                }
-                await orderItems.update(req, res);
-            } catch (err){
-                next(err);
-            }
-        });
+        // this.router.put('/:id', async (req, res, next) => {
+        //     try {
+        //         const orderItemValidate = orderItemSchema.validate(req.body);
+        //         if (orderItemValidate.error) {
+        //             throw orderItemValidate.error;
+        //         }
+        //         const idValidate = idSchema.validate(req.params.id);
+        //         if (idValidate.error) {
+        //             throw idValidate.error;
+        //         }
+        //         await orderItems.update(req, res);
+        //     } catch (err){
+        //         next(err);
+        //     }
+        // });
 
         //delete
         this.router.delete('/:id', async(req, res, next) => {
