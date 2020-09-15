@@ -18,6 +18,7 @@
     "swagger"
   ],
   "dependencies": {
+    "@types/jest": "^26.0.13",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "jest": "^26.4.2",
@@ -37,5 +38,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mandanemedia/SimpleOrderService"
+  },
+  "jest": {
+    "testMatch": [
+      "**/dist/**/*.test.js"
+    ]
   }
 }

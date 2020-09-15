@@ -2,6 +2,11 @@
 import { sequelize } from './../config/db';
 import { DataTypes } from 'sequelize';
 
+// TODO How to generate model automatically 
+// npm i sequelize-auto -g
+// sequelize-auto -o "./src/main/models" -a .sequelize-auto.cfg.js -d somedbname -h <mydb.somehost.com> -u <myuser> -p 3306 -x <mypassword> -e mysql -t USER -C
+// example https://medium.com/@kvr2277/sequelize-mocking-with-jest-and-node-933c1f439579
+
 export const customer = sequelize.define('customer', {
     fullName: {
         type: DataTypes.STRING

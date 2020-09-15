@@ -125,3 +125,17 @@ To view the full documentation go to the swagger.
 * TODO All join tables  like /orders/{id} need to be tested because of required: false.
 * TODO Add more error handeling
 * TODO decouple controler from modal by add interface to both for data interaction 
+
+## Run Test
+
+* Testing is configured to be run on the dist folder, because of that you need to run dist in one tab and npm test in another tab if you are developing test cases.
+
+First tab
+```bash
+npm run dev
+```
+
+Seccond tab
+```
+npm test -- --watch
+```

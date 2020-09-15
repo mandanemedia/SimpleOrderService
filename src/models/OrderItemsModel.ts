@@ -83,7 +83,7 @@ class OrderItems {
         try {
             await this.verifyOrderId( orderId );
 
-            const inventoryRecord = await inventory.findOne({
+            const inventoryRecord: any = await inventory.findOne({
                 where: {
                     inventoryId: inventoryId
                 },
@@ -138,7 +138,7 @@ class OrderItems {
                 transaction: transaction
             });
 
-            const inventoryRecord = await inventory.findOne({
+            const inventoryRecord : any = await inventory.findOne({
                 where: {
                     inventoryId: orderItemRecord.inventoryId
                 },
