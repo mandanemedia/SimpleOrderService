@@ -1,87 +1,58 @@
 import { Request, Response } from 'express';
-import { Inventory, HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
-import BaseError from './../utils/BaseError';
-import InventoriesModel from './../models/InventoriesModel';
+import { HttpStatusCode } from '../models/types';
+import BaseError from '../utils/BaseError';
+import InventoriesModel from '../models/InventoriesModel';
 
 class Inventories {
-    inventoriesModel: InventoriesModel;
-    constructor() {
-        this.inventoriesModel = new InventoriesModel();
-    }
-    
-    async read (req: Request, res: Response) {
-        try {
-            const { productId } = req.query;
-            return res.json(await this.inventoriesModel.read(productId));
-        }
-        catch (e) {
-            throw e;
-        }
+    static async read(req: Request, res: Response) {
+        const { productId } = req.query;
+        return res.json(await InventoriesModel.read(productId));
     }
 
-    async readById (req: Request, res: Response) {
-        try{
-            const id = req.params.id;
-            const inventory = await this.inventoriesModel.readById(id);
-            if (!!inventory) {
-                return res.json(inventory);
-            }
-            else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
-            }
-        }
-        catch (e) {
-            throw e;
-        }
-    }
-
-    async create (req: Request, res: Response) {
-        try {
-            //TODO check that productId exist in DB first
-            const { productId, color, size, quantity } = req.body;
-            const inventoryId = uuid();
-            const inventory = await this.inventoriesModel.create( inventoryId, productId, color, size, quantity);
+    static async readById(req: Request, res: Response) {
+        const { id } = req.params;
+        const inventory = await InventoriesModel.readById(id);
+        if (inventory) {
             return res.json(inventory);
         }
-        catch (e) {
-            throw e;
-        }
+        throw new BaseError(HttpStatusCode.NOT_FOUND);
     }
 
-    async update (req: Request, res: Response) {
-        try{
-            const { productId, color, size, quantity } = req.body;
-            const inventoryId = req.params.id;
-            const updatedCount = await this.inventoriesModel.update( inventoryId, productId, color, size, quantity);
-            if (updatedCount[0] === 1) {
-                return res.json({ inventoryId, productId, color, size, quantity });
-            }
-            //TODO need to handle cannot update the record
-            else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
-            }
-        }
-        catch (e) {
-            throw e;
-        }
+    static async create(req: Request, res: Response) {
+        // TODO check that productId exist in DB first
+        const {
+            productId, color, size, quantity,
+        } = req.body;
+        const inventoryId = uuid();
+        const inventory = await InventoriesModel.create(inventoryId, productId, color, size, quantity);
+        return res.json(inventory);
     }
 
-    async delete (req: Request, res: Response) {
-        try{
-            const id = req.params.id;
-            const deletedCount = await this.inventoriesModel.delete(id);
-            if (deletedCount === 1) {
-                return res.json({id});
-            }
-            else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
-            }
+    static async update(req: Request, res: Response) {
+        const {
+            productId, color, size, quantity,
+        } = req.body;
+        const inventoryId = req.params.id;
+        const updatedCount = await InventoriesModel.update(inventoryId, productId, color, size, quantity);
+        if (updatedCount[0] === 1) {
+            return res.json({
+                inventoryId, productId, color, size, quantity,
+            });
         }
-        catch (e) {
-            throw e;
-        }
+        // TODO need to handle cannot update the record
+
+        throw new BaseError(HttpStatusCode.NOT_FOUND);
     }
-};
+
+    static async delete(req: Request, res: Response) {
+        const { id } = req.params;
+        const deletedCount = await InventoriesModel.delete(id);
+        if (deletedCount === 1) {
+            return res.json({ id });
+        }
+        throw new BaseError(HttpStatusCode.NOT_FOUND);
+    }
+}
 
 export default Inventories;

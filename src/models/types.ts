@@ -43,4 +43,3 @@ export type Order = {
     date: Date,
     status: OrderStatus
 };
-

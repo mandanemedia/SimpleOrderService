@@ -1,14 +1,12 @@
 import express from 'express';
-import { v4 as uuid } from 'uuid';
 import Joi from 'joi';
-import Customers from './../controllers/Customers';
+import Customers from '../controllers/Customers';
 
 class CustomersRoutes {
     public router;
-    constructor(server: express.Express) {
-        this.router = express.Router();
 
-        const customers = new Customers();
+    constructor() {
+        this.router = express.Router();
 
         const idSchema = Joi.string().guid().required();
         const customerSchema = Joi.object().required().keys({
@@ -16,42 +14,42 @@ class CustomersRoutes {
             email: Joi.string().email().required(),
         });
 
-        //read all customers
+        // read all customers
         this.router.get('/', async (req, res, next) => {
-            try{
-                await customers.read(req, res);
-            } catch (err){
+            try {
+                await Customers.read(req, res);
+            } catch (err) {
                 next(err);
             }
         });
 
         // read customer by id
         this.router.get('/:id', async (req, res, next) => {
-            try{
-                const {error} = idSchema.validate(req.params.id);
+            try {
+                const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await customers.readById(req, res);
-            } catch (err){
+                await Customers.readById(req, res);
+            } catch (err) {
                 next(err);
             }
         });
 
-        //create new customer
+        // create new customer
         this.router.post('/', async (req, res, next) => {
             try {
-                const {error} = customerSchema.validate(req.body);
+                const { error } = customerSchema.validate(req.body);
                 if (error) {
                     throw error;
                 }
-                await customers.create(req, res);
-            } catch (err){
+                await Customers.create(req, res);
+            } catch (err) {
                 next(err);
             }
         });
 
-        //update a customer
+        // update a customer
         this.router.put('/:id', async (req, res, next) => {
             try {
                 const customerValidate = customerSchema.validate(req.body);
@@ -62,26 +60,25 @@ class CustomersRoutes {
                 if (idValidate.error) {
                     throw idValidate.error;
                 }
-                await customers.update(req, res);
-            } catch (err){
+                await Customers.update(req, res);
+            } catch (err) {
                 next(err);
             }
         });
 
-        //delete customer
-        this.router.delete('/:id', async(req, res, next) => {
+        // delete customer
+        this.router.delete('/:id', async (req, res, next) => {
             try {
-                const {error} = idSchema.validate(req.params.id);
+                const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await customers.delete(req, res);
-            }  catch (err){
+                await Customers.delete(req, res);
+            } catch (err) {
                 next(err);
             }
         });
-    };
-};
+    }
+}
 
 export default CustomersRoutes;
-

@@ -1,86 +1,58 @@
 import { Request, Response } from 'express';
-import { HttpStatusCode } from './../models/types';
 import { v4 as uuid } from 'uuid';
-import BaseError from './../utils/BaseError';
-import OrderItemsModel from './../models/OrderItemsModel';
+import { HttpStatusCode } from '../models/types';
+import BaseError from '../utils/BaseError';
+import OrderItemsModel from '../models/OrderItemsModel';
 
 class OrderItems {
-    orderItemsModel: OrderItemsModel;
-    constructor() {
-        this.orderItemsModel = new OrderItemsModel();
-    }
-    
-    async read (req: Request, res: Response) {
+    static async read(req: Request, res: Response) {
         try {
             const { orderId } = req.query;
-            return res.json(await this.orderItemsModel.read(orderId));
-        }
-        catch (e) {
+            return res.json(await OrderItemsModel.read(orderId));
+        } catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
         }
     }
 
-    async readById (req: Request, res: Response) {
+    static async readById(req: Request, res: Response) {
         try {
-            const id = req.params.id;
-            const orderItem = await this.orderItemsModel.readById(id);
-            if (!!orderItem) {
+            const { id } = req.params;
+            const orderItem = await OrderItemsModel.readById(id);
+            if (orderItem) {
                 return res.json(orderItem);
             }
-            else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
-            }
-        }
-        catch (e) {
+            throw new BaseError(HttpStatusCode.NOT_FOUND);
+        } catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
         }
     }
 
-    async create (req: Request, res: Response) {
-        try {
-            //TODO check that orderId exist in DB first
-            const { orderId, inventoryId, quantity } = req.body;
-            const orderItemId = uuid();
-            const orderItem = await this.orderItemsModel.create( orderItemId, orderId, inventoryId, quantity );
-            return res.json(orderItem);
-        }
-        catch (e) {
-            throw e;
-        }
+    static async create(req: Request, res: Response) {
+        // TODO check that orderId exist in DB first
+        const { orderId, inventoryId, quantity } = req.body;
+        const orderItemId = uuid();
+        const orderItem = await OrderItemsModel.create(orderItemId, orderId, inventoryId, quantity);
+        return res.json(orderItem);
     }
 
-    async update (req: Request, res: Response) {
-        try {
-            const { quantity } = req.body;
-            const orderItemId = req.params.id;
-            const updatedCount = await this.orderItemsModel.update( orderItemId, quantity );
-            if (!! updatedCount ) {
-                return res.json({ orderItemId, quantity });
-            }
-            else {
-                throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
-            }
+    static async update(req: Request, res: Response) {
+        const { quantity } = req.body;
+        const orderItemId = req.params.id;
+        const updatedCount = await OrderItemsModel.update(orderItemId, quantity);
+        if (updatedCount) {
+            return res.json({ orderItemId, quantity });
         }
-        catch (e) {
-            throw e;
-        }
+        throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
     }
 
-    async delete (req: Request, res: Response) {
-        try {
-            const id = req.params.id;
-            const deletedCount = await this.orderItemsModel.delete(id);
-            if (deletedCount === 1) {
-                return res.json({id});
-            }
-            else {
-                throw new BaseError(HttpStatusCode.NOT_FOUND);
-            }
+    static async delete(req: Request, res: Response) {
+        const { id } = req.params;
+        const deletedCount = await OrderItemsModel.delete(id);
+        if (deletedCount === 1) {
+            return res.json({ id });
         }
-        catch (e) {
-            throw e;
-        }
+        throw new BaseError(HttpStatusCode.NOT_FOUND);
     }
-};
+}
 
 export default OrderItems;

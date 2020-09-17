@@ -8,27 +8,26 @@ import OrderItemsRoutes from './routes/OrderItemsRoutes';
 import OrdersRoutes from './routes/OrdersRoutes';
 
 class Router {
-
     constructor(server: express.Express) {
         const router = express.Router();
         server.use(bodyParser.urlencoded({ extended: true }));
         server.use(bodyParser.json());
 
         const productsRoutes = new ProductsRoutes(server);
-        server.use('/products', productsRoutes.router );
+        server.use('/products', productsRoutes.router);
         const inventoriesRoutes = new InventoriesRoutes(server);
-        server.use('/inventories', inventoriesRoutes.router );
+        server.use('/inventories', inventoriesRoutes.router);
         const customersRoutes = new CustomersRoutes(server);
-        server.use('/customers', customersRoutes.router );
+        server.use('/customers', customersRoutes.router);
         const orderItemsRoutes = new OrderItemsRoutes(server);
-        server.use('/orderitems', orderItemsRoutes.router );
+        server.use('/orderitems', orderItemsRoutes.router);
         const ordersRoutes = new OrdersRoutes(server);
-        server.use('/orders', ordersRoutes.router );
+        server.use('/orders', ordersRoutes.router);
 
-        server.use((err, req, res, next) => {
+        server.use((err, req, res) => {
             handleError(err, res);
-        });  
-        server.use('/', router); 
+        });
+        server.use('/', router);
     }
 }
 
