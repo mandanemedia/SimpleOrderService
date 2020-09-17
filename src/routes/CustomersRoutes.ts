@@ -14,23 +14,23 @@ class CustomersRoutes {
             email: Joi.string().email().required(),
         });
 
-        // read all customers
+        // find all customers
         this.router.get('/', async (req, res, next) => {
             try {
-                await Customers.read(req, res);
+                await Customers.findAll(req, res);
             } catch (err) {
                 next(err);
             }
         });
 
-        // read customer by id
+        // findOne customer by id
         this.router.get('/:id', async (req, res, next) => {
             try {
                 const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await Customers.readById(req, res);
+                await Customers.findOneById(req, res);
             } catch (err) {
                 next(err);
             }

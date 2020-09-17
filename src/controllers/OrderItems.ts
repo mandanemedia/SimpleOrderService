@@ -5,19 +5,19 @@ import BaseError from '../utils/BaseError';
 import OrderItemsModel from '../models/OrderItemsModel';
 
 class OrderItems {
-    static async read(req: Request, res: Response) {
+    static async findAll(req: Request, res: Response) {
         try {
             const { orderId } = req.query;
-            return res.json(await OrderItemsModel.read(orderId));
+            return res.json(await OrderItemsModel.findAll(orderId));
         } catch (e) {
             throw new BaseError(HttpStatusCode.INTERNAL_SERVER);
         }
     }
 
-    static async readById(req: Request, res: Response) {
+    static async findOneById(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const orderItem = await OrderItemsModel.readById(id);
+            const orderItem = await OrderItemsModel.findOneById(id);
             if (orderItem) {
                 return res.json(orderItem);
             }

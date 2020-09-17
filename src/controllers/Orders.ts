@@ -5,13 +5,13 @@ import BaseError from '../utils/BaseError';
 import OrdersModel from '../models/OrdersModel';
 
 class Orders {
-    static async read(req: Request, res: Response) {
-        return res.json(await OrdersModel.read());
+    static async findAll(req: Request, res: Response) {
+        return res.json(await OrdersModel.findAll());
     }
 
-    static async readById(req: Request, res: Response) {
+    static async findOneById(req: Request, res: Response) {
         const { id } = req.params;
-        const order = await OrdersModel.readById(id);
+        const order = await OrdersModel.findOneById(id);
         if (order) {
             return res.json(order);
         }

@@ -15,23 +15,23 @@ class ProductsRoutes {
             price: Joi.number().positive().required(),
         });
 
-        // read all products
+        // find all products
         this.router.get('/', async (req, res, next) => {
             try {
-                await Products.read(req, res);
+                await Products.findAll(req, res);
             } catch (err) {
                 next(err);
             }
         });
 
-        // read product by id
+        // findOne product by id
         this.router.get('/:id', async (req, res, next) => {
             try {
                 const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await Products.readById(req, res);
+                await Products.findOneById(req, res);
             } catch (err) {
                 next(err);
             }

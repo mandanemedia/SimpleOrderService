@@ -49,7 +49,7 @@ class OrderItems {
         }
     }
 
-    static async read(orderId) {
+    static async findAll(orderId) {
         if (orderId) {
             const orderItems = await orderItem.findAll({
                 where: { orderId },
@@ -67,7 +67,7 @@ class OrderItems {
         return orderItems.reduce(OrderItems.convertToOrders, []);
     }
 
-    static readById(orderItemId:string) {
+    static findOneById(orderItemId:string) {
         return orderItem.findOne({
             where: {
                 orderItemId,

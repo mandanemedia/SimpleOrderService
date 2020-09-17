@@ -15,27 +15,27 @@ class OrderItemsRoutes {
             quantity: Joi.number().positive().required(),
         });
 
-        // read all
+        // find all
         this.router.get('/', async (req, res, next) => {
             try {
                 const { error } = Joi.string().guid().validate(req.query.orderId);
                 if (error) {
                     throw error;
                 }
-                await OrderItems.read(req, res);
+                await OrderItems.findAll(req, res);
             } catch (err) {
                 next(err);
             }
         });
 
-        // read by id
+        // findOne by id
         this.router.get('/:id', async (req, res, next) => {
             try {
                 const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await OrderItems.readById(req, res);
+                await OrderItems.findOneById(req, res);
             } catch (err) {
                 next(err);
             }

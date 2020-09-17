@@ -15,23 +15,23 @@ class OrdersRoutes {
             status: Joi.string().required(),
         });
 
-        // read all orders
+        // find all orders
         this.router.get('/', async (req, res, next) => {
             try {
-                await Orders.read(req, res);
+                await Orders.findAll(req, res);
             } catch (err) {
                 next(err);
             }
         });
 
-        // read order by id
+        // findOne order by id
         this.router.get('/:id', async (req, res, next) => {
             try {
                 const { error } = idSchema.validate(req.params.id);
                 if (error) {
                     throw error;
                 }
-                await Orders.readById(req, res);
+                await Orders.findOneById(req, res);
             } catch (err) {
                 next(err);
             }

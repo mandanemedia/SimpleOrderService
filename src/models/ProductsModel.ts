@@ -3,11 +3,11 @@ import { HttpStatusCode } from './types';
 import { product } from './dbModels';
 
 class ProductsModel {
-    static read() {
+    static findAll() {
         return product.findAll();
     }
 
-    static readById(productId:string) {
+    static findOneById(productId:string) {
         return product.findOne({
             where: {
                 productId,

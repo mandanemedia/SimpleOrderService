@@ -5,13 +5,13 @@ import BaseError from '../utils/BaseError';
 import CustomersModel from '../models/CustomersModel';
 
 class Customers {
-    static async read(req: Request, res: Response) {
-        return res.json(await CustomersModel.read());
+    static async findAll(req: Request, res: Response) {
+        return res.json(await CustomersModel.findAll());
     }
 
-    static async readById(req: Request, res: Response) {
+    static async findOneById(req: Request, res: Response) {
         const { id } = req.params;
-        const customer = await CustomersModel.readById(id);
+        const customer = await CustomersModel.findOneById(id);
         if (customer) {
             return res.json(customer);
         }

@@ -5,14 +5,14 @@ import BaseError from '../utils/BaseError';
 import InventoriesModel from '../models/InventoriesModel';
 
 class Inventories {
-    static async read(req: Request, res: Response) {
+    static async findAll(req: Request, res: Response) {
         const { productId } = req.query;
-        return res.json(await InventoriesModel.read(productId));
+        return res.json(await InventoriesModel.findAll(productId));
     }
 
-    static async readById(req: Request, res: Response) {
+    static async findOneById(req: Request, res: Response) {
         const { id } = req.params;
-        const inventory = await InventoriesModel.readById(id);
+        const inventory = await InventoriesModel.findOneById(id);
         if (inventory) {
             return res.json(inventory);
         }

@@ -8,11 +8,11 @@ import { customer } from './dbModels';
 class CustomersModel {
     // since return has to wait no need the keyword await here
     // and there is no other wat to return like create function which has thorws
-    static read() {
+    static findAll() {
         return customer.findAll();
     }
 
-    static readById(customerId:string) {
+    static findOneById(customerId:string) {
         return customer.findOne({
             where: {
                 customerId,

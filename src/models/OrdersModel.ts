@@ -3,7 +3,7 @@ import { HttpStatusCode } from './types';
 import { order, orderItem } from './dbModels';
 
 class OrdersModel {
-    static async read() {
+    static async findAll() {
         try {
             return await order.findAll({
                 include: [{
@@ -19,7 +19,7 @@ class OrdersModel {
         }
     }
 
-    static async readById(orderId:string) {
+    static async findOneById(orderId:string) {
         try {
             return await order.findOne({
                 where: { orderId },

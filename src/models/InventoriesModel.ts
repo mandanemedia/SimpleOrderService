@@ -26,7 +26,7 @@ class InventoriesModel {
         return total;
     }
 
-    static async read(productId) {
+    static async findAll(productId) {
         if (productId) {
             const inventories = await inventory.findAll({
                 where: { productId },
@@ -44,7 +44,7 @@ class InventoriesModel {
         return inventories.reduce(InventoriesModel.convertToProducts, []);
     }
 
-    static readById(inventoryId:string) {
+    static findOneById(inventoryId:string) {
         return inventory.findOne({
             where: { inventoryId },
             include: [{
