@@ -121,6 +121,7 @@ To view the full documentation go to the swagger.
 
 
 ## TODO
+* TODO Use shttps://www.npmjs.com/package/http-status-codes
 * TODO add basic Unit test using JEST
 * TODO All join tables  like /orders/{id} need to be tested because of required: false.
 * TODO Add more error handeling
