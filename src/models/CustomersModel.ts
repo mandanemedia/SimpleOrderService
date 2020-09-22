@@ -2,7 +2,7 @@ import BaseError from '../utils/BaseError';
 import { HttpStatusCode } from './types';
 import { customer } from './dbModels';
 
-// TODO revise https://vivacitylabs.com/setup-typescript-sequelize/ 
+// TODO revise https://vivacitylabs.com/setup-typescript-sequelize/
 // or https://michalzalecki.com/using-sequelize-with-typescript/
 
 class CustomersModel {
