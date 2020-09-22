@@ -82,7 +82,7 @@ class OrderItemsModel {
     static async create(orderItemId: string, orderId :string, inventoryId :string, quantity: number) {
         const transaction = await sequelize.transaction();
         try {
-            await OrderItems.verifyOrderId(orderId);
+            await OrderItemsModel.verifyOrderId(orderId);
 
             const inventoryRecord: any = await inventory.findOne({
                 where: {
@@ -125,7 +125,7 @@ class OrderItemsModel {
     static async update(orderItemId: string, newQuantity: number) {
         const transaction = await sequelize.transaction();
         try {
-            await OrderItems.verifyOrderItemId(orderItemId);
+            await OrderItemsModel.verifyOrderItemId(orderItemId);
 
             const orderItemRecord = await orderItem.findOne({
                 where: {
@@ -170,7 +170,7 @@ class OrderItemsModel {
     static async delete(orderItemId:string) {
         const transaction = await sequelize.transaction();
         try {
-            await OrderItems.verifyOrderItemId(orderItemId);
+            await OrderItemsModel.verifyOrderItemId(orderItemId);
 
             const orderItemRecord = await orderItem.findOne({
                 where: {
