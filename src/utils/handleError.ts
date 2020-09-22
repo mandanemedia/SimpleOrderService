@@ -1,4 +1,4 @@
-const handleError = (err, res) => {
+const handleError = (err, req, res, next) => {
     console.log(err);
     if (err.httpCode) {
         res.status(err.httpCode).send({ error: err });

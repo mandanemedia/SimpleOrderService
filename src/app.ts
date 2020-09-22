@@ -4,7 +4,7 @@ import Router from './router';
 import swaggerDocument from './swagger.json';
 
 class App {
-  private httpServer: any
+  public httpServer: any
 
   constructor() {
       this.httpServer = express();

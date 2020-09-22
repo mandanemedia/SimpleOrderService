@@ -13,19 +13,19 @@ class Router {
         server.use(bodyParser.urlencoded({ extended: true }));
         server.use(bodyParser.json());
 
-        const productsRoutes = new ProductsRoutes(server);
+        const productsRoutes = new ProductsRoutes();
         server.use('/products', productsRoutes.router);
-        const inventoriesRoutes = new InventoriesRoutes(server);
+        const inventoriesRoutes = new InventoriesRoutes();
         server.use('/inventories', inventoriesRoutes.router);
-        const customersRoutes = new CustomersRoutes(server);
+        const customersRoutes = new CustomersRoutes();
         server.use('/customers', customersRoutes.router);
-        const orderItemsRoutes = new OrderItemsRoutes(server);
+        const orderItemsRoutes = new OrderItemsRoutes();
         server.use('/orderitems', orderItemsRoutes.router);
-        const ordersRoutes = new OrdersRoutes(server);
+        const ordersRoutes = new OrdersRoutes();
         server.use('/orders', ordersRoutes.router);
 
-        server.use((err, req, res) => {
-            handleError(err, res);
+        server.use((err, req, res, next) => {
+            handleError(err, req, res, next);
         });
         server.use('/', router);
     }

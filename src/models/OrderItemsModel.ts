@@ -3,7 +3,7 @@ import { HttpStatusCode } from './types';
 import { order, orderItem, inventory } from './dbModels';
 import { sequelize } from '../config/db';
 
-class OrderItems {
+class OrderItemsModel {
     static convertToOrders(total, item) {
         const {
             quantity, inventoryId, orderId, orderItemId, order,
@@ -57,14 +57,14 @@ class OrderItems {
                     model: order, required: false,
                 }],
             });
-            return orderItems.reduce(OrderItems.convertToOrders, []);
+            return orderItems.reduce(OrderItemsModel.convertToOrders, []);
         }
         const orderItems = await orderItem.findAll({
             include: [{
                 model: order, required: false,
             }],
         });
-        return orderItems.reduce(OrderItems.convertToOrders, []);
+        return orderItems.reduce(OrderItemsModel.convertToOrders, []);
     }
 
     static findOneById(orderItemId:string) {
@@ -76,7 +76,7 @@ class OrderItems {
                 model: order, required: false,
             }],
         });
-    // return [orderItem].reduce(this.convertToOrders, [])[0];
+    // return [orderItem].reduce(OrderItemsModel.convertToOrders, [])[0];
     }
 
     static async create(orderItemId: string, orderId :string, inventoryId :string, quantity: number) {
@@ -214,4 +214,4 @@ class OrderItems {
     }
 }
 
-export default OrderItems;
+export default OrderItemsModel;
